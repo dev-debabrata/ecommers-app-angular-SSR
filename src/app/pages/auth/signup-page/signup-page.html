@@ -1,0 +1,164 @@
+<div class="signup-wrapper">
+  <div class="signup-card">
+    <h1>Create Account</h1>
+    <p>Signup to create your account</p>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="name">
+        <div>
+          <label>First Name</label>
+          <div class="input-box">
+            <!-- <span>👤</span> -->
+            <mat-icon class="material-icons-outlined icon">person</mat-icon>
+            <input
+              id="text"
+              type="text"
+              name="name"
+              placeholder="Enter your name"
+              formControlName="firstName"
+            />
+          </div>
+
+          <div class="error">
+            @if (firstName.invalid && firstName.touched) {
+              <p class="error-line">First name is required</p>
+            }
+          </div>
+        </div>
+        <div>
+          <label>Last Name</label>
+          <div class="input-box">
+            <mat-icon class="material-icons-outlined icon">person</mat-icon>
+            <input
+              id="text"
+              type="text"
+              name="name"
+              placeholder="Enter your name"
+              formControlName="lastName"
+            />
+          </div>
+          <div class="error">
+            @if (lastName.invalid && lastName.touched) {
+              <p class="error-line">Last name is required</p>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="email">
+        <label>Email</label>
+        <div class="input-box">
+          <mat-icon class="material-icons-outlined icon">email</mat-icon>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            formControlName="email"
+          />
+        </div>
+
+        <div class="error">
+          @if (email.errors?.['required'] && email.touched) {
+            <p class="error-line">Email is required</p>
+          }
+          @if (email.errors?.['email']) {
+            <p class="error-line">Enter valid email</p>
+          }
+          @if (email.errors?.['emailTaken']) {
+            <p class="error-line">Email already exists</p>
+          }
+        </div>
+      </div>
+
+      <div class="password">
+        <div>
+          <label>Password</label>
+          <div class="input-box">
+            <mat-icon class="icon">lock</mat-icon>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              formControlName="password"
+            />
+          </div>
+          <div class="error">
+            @if (password.errors?.['required'] && password.touched) {
+              <p class="error-line">Password required</p>
+            }
+
+            @if (password.errors?.['minlength'] && password.touched) {
+              <p class="error-line">Minimum 6 characters</p>
+            }
+          </div>
+        </div>
+
+        <div>
+          <label>Confirm Password</label>
+          <div class="input-box">
+            <mat-icon class="icon">lock</mat-icon>
+            <input
+              id="confirm-password"
+              type="password"
+              name="confirm-password"
+              placeholder="Enter your password"
+              formControlName="confirmPassword"
+            />
+          </div>
+          <div class="error">
+            <div class="error">
+              @if (confirmPassword.errors?.['required'] && confirmPassword.touched) {
+                <p class="error-line">Confirm password required</p>
+              }
+
+              @if (form.errors?.['passwordMismatch'] && confirmPassword.touched) {
+                <p class="error-line">Passwords do not match</p>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label>Phone Number</label>
+        <div class="phone-header">
+          <div formArrayName="phoneNumber" class="phone">
+            @for (phone of phoneNumber.controls; track $index; let i = $index) {
+              <div class="phone-row">
+                <div class="input-box">
+                  <input [formControlName]="i" type="tel" placeholder="Phone number" />
+                  <button (click)="removePhone(i)" class="remove">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+                <!-- <button (click)="removePhone(i)" type="button" class="remove">
+                
+                </button> -->
+              </div>
+            }
+          </div>
+          <div class="phone-btn">
+            <button (click)="addPhone()" type="button" class="add">Add Phone</button>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="login-btn submit-button">
+        @if (isLoading) {
+          <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+        } @else {
+          Sign Up
+        }
+      </button>
+
+      <!-- <button class="submit-button" type="submit">Sign Up</button> -->
+    </form>
+
+    <div class="login-link">
+      I have an account?
+      <a routerLink="/login">Login</a>
+    </div>
+  </div>
+</div>

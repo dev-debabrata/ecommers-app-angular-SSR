@@ -1,0 +1,46 @@
+<app-hero />
+
+<div class="home-container">
+  <section class="product-container">
+    <h2 class="section-title">
+      Up to 80% off | Best offers
+      <span class="view-all-posts"
+        ><a [routerLink]="['/products']" [queryParams]="{ discount: 50 }">See more items</a></span
+      >
+    </h2>
+    <app-discount />
+  </section>
+
+  <section class="product-container">
+    <h2 class="section-title">
+      Related to items you've viewed
+      <span class="view-all-posts"
+        ><a
+          [routerLink]="['/products']"
+          [queryParams]="{ main: 'electronics', category: 'mobiles' }"
+        >
+          See more items
+        </a></span
+      >
+    </h2>
+
+    <app-mobiles [category]="'mobiles'" />
+  </section>
+
+  <section class="product-container">
+    <h2 class="section-title">
+      More items to consider
+      <span class="view-all-posts"><a routerLink="/products">See more items</a></span>
+    </h2>
+    <app-more-items />
+  </section>
+
+  <section class="product-container">
+    <h2 class="section-title">
+      Today Deals | Limited offers
+      <span class="view-all-posts"><a routerLink="/products">See more items</a></span>
+    </h2>
+
+    <app-today-deals />
+  </section>
+</div>

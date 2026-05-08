@@ -1,0 +1,147 @@
+@if (userData()?.addresses?.length) {
+  <div class="address-list">
+    @for (addr of visibleAddresses(); track addr.id) {
+      <label
+        class="address-card"
+        [class.selected]="selectedAddress()?.id === addr.id"
+        (click)="selectAddress(addr)"
+      >
+        <input
+          type="radio"
+          name="selectedAddress"
+          [value]="addr.id"
+          [checked]="selectedAddress()?.id === addr.id"
+        />
+
+        <div class="address-details">
+          <h4>{{ addr.fullName }}</h4>
+          <p>{{ addr.address }}, {{ addr.city }}, {{ addr.state }} - {{ addr.pinCode }}</p>
+          <p>Landmark: {{ addr.landmark }}</p>
+          <small>Phone number: {{ addr.phone }}</small>
+        </div>
+
+        <div (click)="$event.stopPropagation()">
+          <button
+            type="button"
+            (click)="$event.stopPropagation(); editAddress(addr)"
+            class="edit-btn"
+          >
+            Edit address
+          </button>
+        </div>
+      </label>
+    }
+  </div>
+
+  @if (!selectedAddress()) {
+    <p class="select-worning">Please select a delivery address to continue.</p>
+  }
+} @else {
+  <p>No saved address</p>
+}
+
+<div class="see-more-add-new">
+  @if ((userData()?.addresses?.length || 0) > 2) {
+    <button type="button" class="toggle-btn" (click)="toggleShowAll()">
+      {{ showAll() ? 'Show less addresses' : 'Show more addresses' }}
+    </button>
+    <!-- <button type="button" class="toggle-btn" (click)="showAll.set(!showAll())">
+      {{ showAll() ? 'Show less addresses' : 'Show more addresses' }}
+    </button> -->
+  }
+
+  <button type="button" (click)="openPopup()" class="add-new">Add New Address</button>
+</div>
+
+@if (showAddressPopup()) {
+  <div class="popup" (click)="showAddressPopup.set(false)">
+    <div class="popup-box" (click)="$event.stopPropagation()">
+      <div class="popup-header">
+        <!-- <h3>Add New Address</h3> -->
+        <h3>{{ editingIndex() !== null ? 'Edit Address' : 'Add New Address' }}</h3>
+
+        <button (click)="showAddressPopup.set(false)">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <div class="form-row">
+        <div class="input-box">
+          <label for="fullName">Full Name</label>
+          <input
+            [ngModel]="newAddress().fullName"
+            (ngModelChange)="updateField('fullName', $event)"
+            placeholder="Full Name"
+          />
+        </div>
+
+        <div class="input-box">
+          <label for="phone">Phone no.</label>
+          <input
+            [ngModel]="newAddress().phone"
+            (ngModelChange)="updateField('phone', $event)"
+            placeholder="Phone"
+          />
+        </div>
+      </div>
+
+      <div class="input-box">
+        <label for="email">Email</label>
+        <input
+          [ngModel]="newAddress().email"
+          (ngModelChange)="updateField('email', $event)"
+          placeholder="Email"
+        />
+
+        <label for="address">Address</label>
+        <input
+          [ngModel]="newAddress().address"
+          (ngModelChange)="updateField('address', $event)"
+          placeholder="Address"
+        />
+
+        <label for="landmark">Landmark</label>
+        <input
+          [ngModel]="newAddress().landmark"
+          (ngModelChange)="updateField('landmark', $event)"
+          placeholder="Landmark"
+        />
+
+        <label for="city">City</label>
+        <input
+          [ngModel]="newAddress().city"
+          (ngModelChange)="updateField('city', $event)"
+          placeholder="City"
+        />
+      </div>
+
+      <div class="form-row">
+        <div class="input-box">
+          <label for="state">State</label>
+          <input
+            [ngModel]="newAddress().state"
+            (ngModelChange)="updateField('state', $event)"
+            placeholder="State"
+          />
+        </div>
+
+        <div class="input-box">
+          <label for="pinCode">PIN Code</label>
+          <input
+            [ngModel]="newAddress().pinCode"
+            (ngModelChange)="updateField('pinCode', $event)"
+            placeholder="PIN Code"
+          />
+        </div>
+      </div>
+
+      <div class="popup-btn">
+        <!-- <button (click)="showAddressPopup.set(false)">Cancel</button> -->
+        <button (click)="saveAddress()">
+          {{ editingIndex() !== null ? 'Update Address' : 'Save Address' }}
+        </button>
+        <!-- <button (click)="saveAddress()">Save Address</button> -->
+      </div>
+    </div>
+  </div>
+}

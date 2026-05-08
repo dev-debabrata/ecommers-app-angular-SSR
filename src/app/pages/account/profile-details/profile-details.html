@@ -1,0 +1,18 @@
+<h2>My Details</h2>
+
+<div class="card-box">
+  <p>
+    <strong>Name:</strong>
+    {{ user()?.firstName }} {{ user()?.lastName }}
+  </p>
+
+  <p>
+    <strong>Email:</strong>
+    {{ user()?.email }}
+  </p>
+
+  <p>
+    <strong>Phone:</strong>
+    {{ user()?.phoneNumber }}
+  </p>
+</div>

@@ -1,0 +1,275 @@
+<!-- This is Signal Form Type -->
+
+<div class="checkout-container">
+  <div class="checkout-left">
+    <h2>Shipping Address</h2>
+
+    <app-checkout-address
+      [user]="user()"
+      (addressSelected)="onAddressSelect($event)"
+    ></app-checkout-address>
+
+    <h3>Shipping Method</h3>
+
+    <div class="shipping-methods">
+      <label class="shipping-card">
+        <div class="shipping-left">
+          <input
+            type="radio"
+            value="free"
+            [checked]="checkoutForm().shippingMethod === 'free'"
+            (change)="setShippingMethod('free')"
+          />
+
+          <div class="shipping-text">
+            <h4>Free Shipping</h4>
+            <small>7-20 Days</small>
+          </div>
+        </div>
+
+        <span>₹0</span>
+      </label>
+
+      <label class="shipping-card">
+        <div class="shipping-left">
+          <input
+            type="radio"
+            value="express"
+            [checked]="checkoutForm().shippingMethod === 'express'"
+            (change)="setShippingMethod('express')"
+          />
+
+          <div class="shipping-text">
+            <h4>Express Shipping</h4>
+            <small>1-3 Days</small>
+          </div>
+        </div>
+
+        <span>₹90</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="checkout-right">
+    <h2>Order Summary</h2>
+
+    @for (item of cartService.cart(); track item.id) {
+      <div class="cart-item">
+        <img [src]="item.image" alt="" />
+
+        <div class="cart-details">
+          <h4>{{ item.name || '' | truncate: 35 }}</h4>
+          <small>Qty: {{ item.quantity }}</small>
+        </div>
+        <div class="price-box">
+          <div>
+            @if (item.discount && item.discount > 0) {
+              <span class="discount"> -{{ item.discount }}% </span>
+            }
+
+            <span class="final-price">
+              ₹{{ getDiscountPrice(item) * item.quantity | number: '1.0-0' }}.00
+            </span>
+          </div>
+
+          <p class="original-price-mrp">
+            M.R.P.:
+            <span class="original-price"> ₹{{ item.price | number: '1.0-0' }}.00 </span>
+          </p>
+        </div>
+      </div>
+    }
+
+    <div class="summary">
+      <div class="summary-row">
+        <span>Subtotal</span>
+        <span>₹ {{ subTotal() | number: '1.0-0' }}.00</span>
+      </div>
+
+      <div class="summary-row">
+        <span>Shipping</span>
+        <span>{{ shippingPrice() }}</span>
+      </div>
+
+      <div class="summary-row">
+        <span>Estimated taxes</span>
+        <span>₹ {{ gst() | number: '1.0-0' }}.00</span>
+      </div>
+
+      <div class="summary-total">
+        <span>Total</span>
+        <span>₹ {{ totalPrice() | number: '1.0-0' }}.00</span>
+      </div>
+    </div>
+
+    <button type="submit" (click)="submitOrder()">Continue to Payment</button>
+  </div>
+</div>
+
+<!-- This is Reactive Form Type -->
+<!-- <form [formGroup]="checkoutForm" (ngSubmit)="submitOrder()">
+  <div class="checkout-container">
+  
+    <div class="checkout-left">
+      <h2>Shipping Address</h2>
+
+      <div class="form-row">
+        <div class="input-box">
+          <label for="fullName">Full Name</label>
+          <input type="text" placeholder="First Name" formControlName="fullName" />
+
+          @if (checkoutForm.get('fullName')?.invalid && checkoutForm.get('fullName')?.touched) {
+            <small>First name is required</small>
+          }
+        </div>
+
+        <div class="input-box">
+          <label for="email">Email</label>
+          <input type="email" placeholder="Email" formControlName="email" />
+
+          @if (checkoutForm.get('email')?.invalid && checkoutForm.get('email')?.touched) {
+            <small>Valid email is required</small>
+          }
+        </div>
+
+        <div class="input-box">
+          <label for="phone no">Phone no</label>
+          <input type="text" placeholder="Phone Number" formControlName="phone" />
+
+          @if (checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched) {
+            <small>Phone number is required</small>
+          }
+        </div>
+      </div>
+
+      <h3>Address</h3>
+      <div class="form-row">
+        <div class="input-box">
+          <input type="text" placeholder="Address" formControlName="address" />
+
+          @if (checkoutForm.get('address')?.invalid && checkoutForm.get('address')?.touched) {
+            <small>Address is required</small>
+          }
+        </div>
+
+        <div class="input-box">
+          <input type="text" placeholder="Landmark" formControlName="landmark" />
+
+          @if (checkoutForm.get('landmark')?.invalid && checkoutForm.get('landmark')?.touched) {
+            <small>Landmark is required</small>
+          }
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="input-box">
+          <input type="text" placeholder="City" formControlName="city" />
+
+          @if (checkoutForm.get('city')?.invalid && checkoutForm.get('city')?.touched) {
+            <small>City is required</small>
+          }
+        </div>
+
+        <div class="input-box">
+          <input type="text" placeholder="State" formControlName="state" />
+
+          @if (checkoutForm.get('state')?.invalid && checkoutForm.get('state')?.touched) {
+            <small>State is required</small>
+          }
+        </div>
+
+        <div class="input-box">
+          <input type="text" placeholder="6-digit PIN code" formControlName="pinCode" />
+
+          @if (checkoutForm.get('pinCode')?.invalid && checkoutForm.get('pinCode')?.touched) {
+            <small>PIN code is required</small>
+          }
+        </div>
+      </div>
+
+      <h3>Shipping Method</h3>
+
+      <div class="shipping-methods">
+        <label class="shipping-card">
+          <div class="shipping-left">
+            <input type="radio" formControlName="shippingMethod" value="free" />
+
+            <div class="shipping-text">
+              <h4>Free Shipping</h4>
+              <small>7-20 Days</small>
+            </div>
+          </div>
+
+          <span>₹0</span>
+        </label>
+
+        <label class="shipping-card">
+          <div class="shipping-left">
+            <input type="radio" formControlName="shippingMethod" value="express" />
+
+            <div class="shipping-text">
+              <h4>Express Shipping</h4>
+              <small>1-3 Days</small>
+            </div>
+          </div>
+
+          <span>₹90</span>
+        </label>
+      </div>
+    </div>
+
+
+    <div class="checkout-right">
+      <h2>Order Summary</h2>
+
+      @if (buyNowItem) {
+        <div class="cart-item">
+          <img [src]="buyNowItem.images" alt="" />
+
+          <div class="cart-details">
+            <h4>{{ buyNowItem.title }}</h4>
+            <small>Qty: {{ buyNowItem.quantity || 1 }}</small>
+          </div>
+
+          <p class="price">₹ {{ buyNowItem.price * (buyNowItem.quantity || 1) }}</p>
+        </div>
+      }
+
+      @for (item of cartService.cart(); track item.id) {
+        <div class="cart-item">
+          <img [src]="item.image" alt="" />
+
+          <div class="cart-details">
+            <h4>{{ item.name }}</h4>
+            <small>Qty: {{ item.quantity }}</small>
+          </div>
+          <p class="price">₹ {{ item.price * item.quantity }}</p>
+        </div>
+      }
+
+      <div class="summary">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>₹ {{ getSubtotal() | number: '1.2-2' }}</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span>{{ shippingPrice() }}</span>
+        </div>
+
+        <div class="summary-row">
+          <span>Estimated taxes</span>
+          <span>₹ {{ gst() | number: '1.2-2' }}</span>
+        </div>
+
+        <div class="summary-total">
+          <span>Total</span>
+          <span>₹ {{ totalPrice() | number: '1.2-2' }}</span>
+        </div>
+      </div>
+
+      <button type="submit">Continue to Payment</button>
+    </div>
+  </div>
+</form> -->
