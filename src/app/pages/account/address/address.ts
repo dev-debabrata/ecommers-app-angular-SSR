@@ -1,11 +1,10 @@
-import { Component, inject, input, PLATFORM_ID, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { SnackbarService } from '../../../services/snackbar.service';
 import { MatIconModule } from '@angular/material/icon';
 import { UserService } from '../../../services/user.service';
 import { AddressUser, User } from '../../../models/user.model';
-import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-address',
@@ -17,7 +16,6 @@ import { isPlatformBrowser } from '@angular/common';
 export class Address {
   private userService = inject(UserService);
   private snackBar = inject(SnackbarService);
-  // private platformId = inject(PLATFORM_ID);
 
   user = input<User | null>();
   showAddressPopup = signal(false);
@@ -42,8 +40,6 @@ export class Address {
   }
 
   openAddressPopup() {
-    // if (!isPlatformBrowser(this.platformId)) return;
-
     const currentUser = this.user();
     if (!currentUser) return;
 
@@ -130,8 +126,6 @@ export class Address {
   }
 
   deleteAddress(index: number) {
-    // if (!isPlatformBrowser(this.platformId)) return;
-
     if (!confirm('Are you sure you want to delete this address?')) return;
 
     const currentUser = this.user();

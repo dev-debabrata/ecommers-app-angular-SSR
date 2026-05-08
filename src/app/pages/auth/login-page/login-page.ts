@@ -1,4 +1,4 @@
-import { Component, inject, PLATFORM_ID } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import {
   FormControl,
@@ -12,7 +12,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { AuthService } from '../../../services/auth-user.service';
 import { SnackbarService } from '../../../services/snackbar.service';
-import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-login-page',
@@ -25,7 +24,6 @@ export class LoginPage {
   private router = inject(Router);
   private authService = inject(AuthService);
   private snackBar = inject(SnackbarService);
-  private platformId = inject(PLATFORM_ID);
 
   isLoading = false;
 

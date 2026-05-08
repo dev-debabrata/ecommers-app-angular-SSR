@@ -1,5 +1,4 @@
-import { Component, DestroyRef, inject, OnInit, PLATFORM_ID } from '@angular/core';
-
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../../services/auth-user.service';
@@ -8,7 +7,6 @@ import { ProfileDetails } from '../profile-details/profile-details';
 import { Address } from '../address/address';
 import { OrderHistory } from '../order-history/order-history';
 import { User } from '../../../models/user.model';
-import { isPlatformBrowser } from '@angular/common';
 import { Order } from '../../../models/order.model';
 
 @Component({
@@ -23,15 +21,12 @@ export class ProfilePage implements OnInit {
   private orderService = inject(OrderService);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
-  // private platformId = inject(PLATFORM_ID);
 
   user: User | null = null;
   orders: Order[] = [];
   activeSection = 'orders';
 
   ngOnInit() {
-    // if (!isPlatformBrowser(this.platformId)) return;
-
     const userSub = this.authService.getFullUser().subscribe({
       next: (user) => {
         this.user = user;
@@ -42,7 +37,6 @@ export class ProfilePage implements OnInit {
           next: (orders) => {
             this.orders = orders.map((o: Order) => ({
               ...o,
-              // date: o.date?.toDate ? o.date.toDate() : o.date,
             }));
           },
           error: (err) => {

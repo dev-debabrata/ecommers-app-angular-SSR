@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit, inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, switchMap, of, Subscription, startWith } from 'rxjs';
 import { ProductService } from '../../services/product.service';
@@ -19,15 +18,11 @@ export class Breadcrumb implements OnInit, OnDestroy {
   }[] = [];
 
   private sub: Subscription | null = null;
-  private platformId = inject(PLATFORM_ID);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private productService = inject(ProductService);
 
   ngOnInit() {
-    //  Only run in browser — prevents SSR hang
-    // if (!isPlatformBrowser(this.platformId)) return;
-
     this.sub = this.router.events
       .pipe(
         filter((e) => e instanceof NavigationEnd),

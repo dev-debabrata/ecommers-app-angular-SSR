@@ -1,20 +1,6 @@
-import {
-  Component,
-  computed,
-  DestroyRef,
-  inject,
-  OnInit,
-  PLATFORM_ID,
-  signal,
-} from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { CartService } from '../../../../services/cart.service';
@@ -25,7 +11,8 @@ import { LoaderService } from '../../../../services/loader.service';
 import { SnackbarService } from '../../../../services/snackbar.service';
 import { CartItem } from '../../../../models/cart.model';
 import { CheckoutAddress } from '../checkout-address/checkout-address';
-import { Order } from '../../../../models/order.model';
+import { Order, OrderAddress } from '../../../../models/order.model';
+import { User } from '../../../../models/user.model';
 
 @Component({
   selector: 'app-checkout-page',
@@ -42,16 +29,13 @@ export class CheckoutPage implements OnInit {
   private destroyRef = inject(DestroyRef);
   private loaderService = inject(LoaderService);
   private snackbar = inject(SnackbarService);
-  // private platformId = inject(PLATFORM_ID);
 
-  user = signal<any>(null);
-  selectedAddress = signal<any>(null);
+  user = signal<User | null>(null);
+  selectedAddress = signal<OrderAddress | null>(null);
 
-  checkoutForm = signal({
+  checkoutForm = signal<{ shippingMethod: 'free' | 'express' }>({
     shippingMethod: 'free',
   });
-
-  // !isPlatformBrowser(this.platformId) &&
 
   ngOnInit(): void {
     if (this.cartService.cart().length === 0) {
@@ -60,38 +44,25 @@ export class CheckoutPage implements OnInit {
     }
 
     const sub = this.authService.getFullUser().subscribe({
-      next: (user: any) => {
-        if (user) {
-          this.user.set(user);
+      next: (user) => {
+        if (!user) return;
 
-          this.checkoutForm.update((form) => ({
-            ...form,
-            fullName: user.firstName + ' ' + user.lastName,
-            email: user.email,
-            phone: user.phoneNumber?.[0] || '',
-          }));
-        }
+        this.user.set(user);
       },
-
       error: (err) => {
         console.error('User fetch error:', err);
       },
     });
 
-    this.destroyRef.onDestroy(() => {
-      sub.unsubscribe();
-    });
+    this.destroyRef.onDestroy(() => sub.unsubscribe());
   }
 
-  onAddressSelect(addr: any) {
+  onAddressSelect(addr: OrderAddress) {
     this.selectedAddress.set(addr);
   }
 
   setShippingMethod(method: 'free' | 'express') {
-    this.checkoutForm.update((f) => ({
-      ...f,
-      shippingMethod: method,
-    }));
+    this.checkoutForm.update((f) => ({ ...f, shippingMethod: method }));
   }
 
   getDiscountPrice(item: CartItem): number {
@@ -100,32 +71,34 @@ export class CheckoutPage implements OnInit {
 
   shippingPrice = computed(() => (this.checkoutForm().shippingMethod === 'express' ? 90 : 0));
 
-  subTotal = computed(() => {
-    return this.cartService.totalPrice();
-  });
+  subTotal = computed(() => this.cartService.totalPrice());
 
-  gst = computed(() => this.subTotal() * 0.18);
+  gst = computed(() => Math.round(this.subTotal() * 0.18));
 
   totalPrice = computed(() => this.subTotal() + this.gst() + this.shippingPrice());
 
   submitOrder() {
-    if (!this.selectedAddress()) {
-      this.snackbar.error('Please Select addresss!');
+    const address = this.selectedAddress();
+    const user = this.user();
+
+    if (!address) {
+      this.snackbar.error('Please select a delivery address!');
       return;
     }
 
-    const user = this.user();
     if (!user?.uid) {
-      this.snackbar.error('User not found!');
+      this.snackbar.error('User not found. Please login again!');
       return;
     }
 
     this.loaderService.show();
 
-    const order: Order = {
+    const uid = user.uid as string;
+
+    const order: Omit<Order, 'id' | 'status'> = {
+      userId: uid,
       userEmail: user.email,
-      userId: user.uid,
-      address: this.selectedAddress(),
+      address,
       shippingMethod: this.checkoutForm().shippingMethod,
       items: this.cartService.cart().map((item) => ({
         productId: item.id,
@@ -138,28 +111,23 @@ export class CheckoutPage implements OnInit {
       subTotal: this.subTotal(),
       gst: this.gst(),
       total: this.totalPrice(),
-      status: 'pending',
       createdAt: Date.now(),
     };
 
-    const orderSub = this.orderService.createOrder(user.uid, order).subscribe({
-      next: (res) => {
+    const orderSub = this.orderService.createOrder(uid, order as Order).subscribe({
+      next: (res: Order) => {
         this.loaderService.hide();
-
         this.cartService.clearCart();
-        this.snackbar.success('Order placed!');
+        this.snackbar.success('Order placed successfully!');
         this.router.navigate(['/order-success', res.id]);
       },
-
       error: (err) => {
         this.loaderService.hide();
-        this.snackbar.error('Order failed!');
-        console.log(err);
+        this.snackbar.error('Order failed! Please try again.');
+        console.error(err);
       },
     });
 
-    this.destroyRef.onDestroy(() => {
-      orderSub.unsubscribe();
-    });
+    this.destroyRef.onDestroy(() => orderSub.unsubscribe());
   }
 }

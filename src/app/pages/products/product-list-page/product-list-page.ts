@@ -1,5 +1,5 @@
-import { Component, DestroyRef, inject, Input, OnInit, PLATFORM_ID } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, DestroyRef, inject, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
@@ -32,7 +32,6 @@ export class ProductListPage implements OnInit {
   private destroyRef = inject(DestroyRef);
   private loaderService = inject(LoaderService);
   private snackBar = inject(SnackbarService);
-  // private platformId = inject(PLATFORM_ID);
 
   @Input() showCategories = true;
   @Input() showWishlistIcon = true;
@@ -154,7 +153,6 @@ export class ProductListPage implements OnInit {
   }
 
   addToWishlist(product: Product) {
-    // if (!isPlatformBrowser(this.platformId)) return;
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/login']);
       return;

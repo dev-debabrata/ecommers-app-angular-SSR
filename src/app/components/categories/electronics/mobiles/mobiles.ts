@@ -1,20 +1,10 @@
-import {
-  Component,
-  computed,
-  DestroyRef,
-  inject,
-  Input,
-  OnInit,
-  PLATFORM_ID,
-  signal,
-} from '@angular/core';
+import { Component, computed, DestroyRef, inject, Input, OnInit, signal } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
 import { ProductService } from '../../../../services/product.service';
 import { Product } from '../../../../models/product.model';
-import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-mobiles',
@@ -27,7 +17,6 @@ export class Mobiles implements OnInit {
   private productService = inject(ProductService);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
-  // private platformId = inject(PLATFORM_ID);
 
   @Input() category: string = 'mobiles';
   @Input() totalLimit = 24;
@@ -48,8 +37,6 @@ export class Mobiles implements OnInit {
   });
 
   ngOnInit() {
-    // if (!isPlatformBrowser(this.platformId)) return;
-
     const sub = this.productService.getProductsByCategory(this.category).subscribe({
       next: (res: Product[]) => {
         this.products.set(res);

@@ -1,5 +1,5 @@
-import { Component, DestroyRef, inject, PLATFORM_ID, signal } from '@angular/core';
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
@@ -9,6 +9,7 @@ import { User } from '../../models/user.model';
 import { Category } from '../../models/category.model';
 import { CATEGORIES } from '../../data/category.data';
 import { MENU } from '../../data/menu.data';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-navbar',
@@ -20,9 +21,8 @@ import { MENU } from '../../data/menu.data';
 export class Navbar {
   private router = inject(Router);
   private authService = inject(AuthService);
-  private snackBar = inject(MatSnackBar);
+  private snackBar = inject(SnackbarService);
   private destroyRef = inject(DestroyRef);
-  private platformId = inject(PLATFORM_ID);
 
   user = signal<User | null>(null);
   selectedCategory: Category | null = null;
@@ -44,8 +44,6 @@ export class Navbar {
   }
 
   ngOnInit() {
-    // if (!isPlatformBrowser(this.platformId)) return;
-
     const sub = this.authService.getFullUser().subscribe({
       next: (user) => {
         this.user.set(user);
@@ -64,12 +62,7 @@ export class Navbar {
     this.authService.logout();
     this.isMenuOpen = false;
 
-    this.snackBar.open('Logged out successfully', 'Close', {
-      duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass: ['snackbar-success'],
-    });
+    this.snackBar.success('Logged out successfully');
 
     this.router.navigate(['/']);
   }

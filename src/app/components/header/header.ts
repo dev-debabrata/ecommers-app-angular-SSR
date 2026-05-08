@@ -10,10 +10,9 @@ import {
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { Navbar } from '../navbar/navbar';
-
 import { Breadcrumb } from '../breadcrumb/breadcrumb';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
@@ -21,6 +20,7 @@ import { CartService } from '../../services/cart.service';
 import { Product } from '../../models/product.model';
 import { WishlistService } from '../../services/wishlist.service';
 import { AuthService } from '../../services/auth-user.service';
+import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
   selector: 'app-header',
@@ -43,7 +43,7 @@ export class Header {
   private cartService = inject(CartService);
   private wishlistService = inject(WishlistService);
   private el = inject(ElementRef);
-  private snackBar = inject(MatSnackBar);
+  private snackBar = inject(SnackbarService);
   private destroyRef = inject(DestroyRef);
   private platformId = inject(PLATFORM_ID);
 
@@ -56,18 +56,18 @@ export class Header {
 
   @Input() hideBreadcrumb = false;
 
+  suggestions: Product[] = [];
+  allProducts: Product[] = [];
+  openDropdownIndex: number | null = null;
+
+  activeIndex = 0;
+  searchTerm = '';
   isOnline = true;
+  showMenu = false;
+  showDropdown = false;
 
   itemCount = this.cartService.itemCount;
   wishlistCount = this.wishlistService.itemCount;
-
-  searchTerm = '';
-  suggestions: Product[] = [];
-  activeIndex = 0;
-  showDropdown = false;
-  allProducts: Product[] = [];
-  showMenu = false;
-  openDropdownIndex: number | null = null;
 
   @HostListener('document:click', ['$event'])
   handleOutsideClick(event: Event) {
@@ -107,14 +107,7 @@ export class Header {
   logout() {
     this.authService.logout();
     this.showMenu = false;
-
-    this.snackBar.open('Logged out successfully', 'Close', {
-      duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass: ['snackbar-success'],
-    });
-
+    this.snackBar.success('Logged out successfully');
     this.router.navigate(['/']);
   }
 
@@ -225,7 +218,7 @@ export class Header {
       this.showDropdown = false;
       this.router.navigate(['/products', match.id]);
     } else {
-      this.snackBar.open('Product not found', 'Close', { duration: 3000 });
+      this.snackBar.error('Product not found');
     }
   }
 }

@@ -1,5 +1,5 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '../../../../services/auth-user.service';
@@ -19,15 +19,12 @@ export class OrderSuccessPage implements OnInit {
   private authService = inject(AuthService);
   private orderService = inject(OrderService);
   private destroyRef = inject(DestroyRef);
-  // private platformId = inject(PLATFORM_ID);
 
   order: Order | null = null;
 
   errorMsg = false;
 
   ngOnInit() {
-    // if (!isPlatformBrowser(this.platformId)) return;
-
     const id = this.route.snapshot.paramMap.get('id');
     if (!id) return;
 

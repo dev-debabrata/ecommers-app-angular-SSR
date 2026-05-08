@@ -1,20 +1,10 @@
-import {
-  Component,
-  computed,
-  DestroyRef,
-  inject,
-  Input,
-  OnInit,
-  PLATFORM_ID,
-  signal,
-} from '@angular/core';
+import { Component, computed, DestroyRef, inject, Input, OnInit, signal } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
 import { ProductService } from '../../../services/product.service';
 import { Product } from '../../../models/product.model';
-import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-discount',
@@ -27,7 +17,6 @@ export class Discount implements OnInit {
   private productService = inject(ProductService);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
-  // private platformId = inject(PLATFORM_ID);
 
   @Input() totalLimit = 24;
 
@@ -47,8 +36,6 @@ export class Discount implements OnInit {
   });
 
   ngOnInit() {
-    // if (!isPlatformBrowser(this.platformId)) return;
-
     const sub = this.productService.getDiscountProducts().subscribe({
       next: (res: Product[]) => {
         this.products.set(res);
@@ -81,21 +68,3 @@ export class Discount implements OnInit {
     this.router.navigate(['/products', id]);
   }
 }
-
-// limitedProducts = computed(() => {
-//   return this.products().slice(0, this.totalLimit);
-// });
-
-// next() {
-//   const maxIndex = Math.max(0, this.limitedProducts().length - this.pageSize);
-
-//   if (this.currentIndex() < maxIndex) {
-//     this.currentIndex.set(this.currentIndex() + this.pageSize);
-//   }
-// }
-
-// prev() {
-//   if (this.currentIndex() > 0) {
-//     this.currentIndex.set(this.currentIndex() - this.pageSize);
-//   }
-// }

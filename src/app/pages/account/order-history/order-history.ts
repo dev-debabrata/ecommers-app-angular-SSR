@@ -2,8 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Product } from '../../../models/product.model';
-import { ProductService } from '../../../services/product.service';
 import { Order, OrderItem } from '../../../models/order.model';
 import { OrderService } from '../../../services/order.service';
 

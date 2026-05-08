@@ -7,7 +7,6 @@ import {
   effect,
   computed,
   DestroyRef,
-  PLATFORM_ID,
 } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
@@ -16,7 +15,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { AddressUser, User } from '../../../../models/user.model';
 import { UserService } from '../../../../services/user.service';
 import { SnackbarService } from '../../../../services/snackbar.service';
-import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-checkout-address',
@@ -29,16 +27,15 @@ export class CheckoutAddress {
   private userService = inject(UserService);
   private snackbar = inject(SnackbarService);
   private destroyRef = inject(DestroyRef);
-  // private platformId = inject(PLATFORM_ID);
 
   user = input<User | null>();
   addressSelected = output<AddressUser>();
 
   userData = signal<User | null>(null);
   editingIndex = signal<number | null>(null);
+  selectedAddress = signal<AddressUser | null>(null);
   showAll = signal(false);
   showAddressPopup = signal(false);
-  selectedAddress = signal<AddressUser | null>(null);
 
   newAddress = signal<AddressUser>({
     fullName: '',
