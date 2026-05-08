@@ -20,8 +20,10 @@ export class AuthService {
   private firestore = inject(Firestore);
 
   firebaseUser$: Observable<FirebaseUser | null> = authState(this.auth);
-  currentUser = signal<FirebaseUser | null>(null);
-  isAuthReady = signal(false);
+  currentUser = signal<FirebaseUser | null>(this.auth.currentUser);
+  isAuthReady = signal(!!this.auth.currentUser);
+  // currentUser = signal<FirebaseUser | null>(null);
+  // isAuthReady = signal(false);
 
   constructor() {
     this.firebaseUser$.subscribe((user) => {
