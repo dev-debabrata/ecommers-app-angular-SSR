@@ -11,7 +11,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const snackBar = inject(SnackbarService);
 
-  // ✅ Skip auth check on server — let browser handle it
   if (!isPlatformBrowser(platformId)) {
     return of(true);
   }
