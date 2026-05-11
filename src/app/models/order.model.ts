@@ -28,6 +28,6 @@ export interface Order {
   gst: number;
   total: number;
   shippingMethod: string;
-  status: 'pending' | 'shipped' | 'delivered';
+  status: 'pending' | 'shipped' | 'delivered' | 'cancelled';
   createdAt: number;
 }

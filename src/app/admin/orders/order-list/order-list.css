@@ -46,7 +46,7 @@
   font-weight: 600;
 }
 
-.status-pending {
+/* .status-pending {
   color: #ff9800;
 }
 
@@ -56,7 +56,7 @@
 
 .status-delivered {
   color: #4caf50;
-}
+} */
 
 .orders {
   overflow-x: auto;
@@ -131,7 +131,7 @@ td:nth-child(1) {
   text-transform: capitalize;
 }
 
-.status.pending {
+/* .status.pending {
   color: #ff9800;
 }
 
@@ -141,7 +141,7 @@ td:nth-child(1) {
 
 .status.delivered {
   color: #4caf50;
-}
+} */
 
 @media (max-width: 768px) {
   .orders {
@@ -177,6 +177,10 @@ td:nth-child(1) {
 }
 .status.delivered {
   color: green;
+}
+
+.status.cancelled {
+  color: red;
 }
 
 select {
