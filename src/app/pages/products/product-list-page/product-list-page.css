@@ -141,6 +141,7 @@ p {
   font-size: 14px;
   font-weight: 600;
   color: #333;
+  margin: 0;
 }
 
 .filters select {
