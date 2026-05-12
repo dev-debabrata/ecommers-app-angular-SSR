@@ -20,6 +20,7 @@ export class CartService {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
 
+  cartLoaded = signal(false);
   cart = signal<CartItem[]>([]);
   itemCount = computed(() => this.cart().length);
 
@@ -37,6 +38,7 @@ export class CartService {
         this.loadCart();
       } else {
         this.cart.set([]);
+        this.cartLoaded.set(false);
       }
     });
   }
@@ -58,6 +60,7 @@ export class CartService {
         .sort((a: CartItem, b: CartItem) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
 
       this.cart.set(updated);
+      this.cartLoaded.set(true);
       //  const current = this.cart();
       // if (JSON.stringify(current) !== JSON.stringify(updated)) {
 

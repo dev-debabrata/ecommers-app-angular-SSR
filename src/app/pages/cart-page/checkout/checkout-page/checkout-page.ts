@@ -1,4 +1,4 @@
-import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -37,11 +37,19 @@ export class CheckoutPage implements OnInit {
     shippingMethod: 'free',
   });
 
+  constructor() {
+    effect(() => {
+      if (this.cartService.cartLoaded() && this.cartService.cart().length === 0) {
+        this.router.navigate(['/']);
+      }
+    });
+  }
+
   ngOnInit(): void {
-    if (this.cartService.cart().length === 0) {
-      this.router.navigate(['/']);
-      return;
-    }
+    // if (this.cartService.cart().length === 0) {
+    //   this.router.navigate(['/']);
+    //   return;
+    // }
 
     const sub = this.authService.getFullUser().subscribe({
       next: (user) => {
