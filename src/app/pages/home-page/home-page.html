@@ -1,6 +1,55 @@
 <app-hero />
 
 <div class="home-container">
+  <div class="home-container-top">
+    <section class="product-container-main">
+      <h2 class="section-title">Today Deals | Limited offers</h2>
+
+      <app-today-deals />
+
+      <span class="view-all-posts-top">
+        <a routerLink="/products" [queryParams]="{ discount: 70 }"> See more deals </a>
+      </span>
+    </section>
+
+    <section class="product-container-main">
+      <h2 class="section-title">Smart watches | Limited offers</h2>
+
+      <app-smart-watches />
+
+      <span class="view-all-posts-top">
+        <a
+          routerLink="/products"
+          [queryParams]="{ main: 'electronics', category: 'smart-watches' }"
+        >
+          See more deals
+        </a>
+      </span>
+    </section>
+
+    <section class="product-container-main">
+      <h2 class="section-title">Laptop | Limited offers</h2>
+
+      <app-laptops />
+
+      <span class="view-all-posts-top">
+        <a routerLink="/products" [queryParams]="{ main: 'electronics', category: 'laptops' }">
+          See more deals
+        </a>
+      </span>
+    </section>
+
+    <section class="product-container-main">
+      <h2 class="section-title">Footwear | Limited offers</h2>
+
+      <app-footwear />
+
+      <span class="view-all-posts-top">
+        <a routerLink="/products" [queryParams]="{ main: 'footwear' }">See more deals</a>
+      </span>
+    </section>
+  </div>
+
   <section class="product-container">
     <h2 class="section-title">
       Up to 80% off | Best offers
@@ -9,6 +58,66 @@
       >
     </h2>
     <app-discount />
+  </section>
+
+  <div class="home-container-top">
+    <section class="product-container-main">
+      <h2 class="section-title">Footwear | Limited offers</h2>
+
+      <app-headphones />
+
+      <span class="view-all-posts-top">
+        <a routerLink="/products" [queryParams]="{ main: 'electronics', category: 'headphones' }"
+          >See more deals</a
+        >
+      </span>
+    </section>
+
+    <section class="product-container-main">
+      <h2 class="section-title">Footwear | Limited offers</h2>
+
+      <app-headphones />
+
+      <span class="view-all-posts-top">
+        <a routerLink="/products" [queryParams]="{ main: 'electronics', category: 'headphones' }"
+          >See more deals</a
+        >
+      </span>
+    </section>
+
+    <section class="product-container-main">
+      <h2 class="section-title">Footwear | Limited offers</h2>
+
+      <app-headphones />
+
+      <span class="view-all-posts-top">
+        <a routerLink="/products" [queryParams]="{ main: 'electronics', category: 'headphones' }"
+          >See more deals</a
+        >
+      </span>
+    </section>
+
+    <section class="product-container-main">
+      <h2 class="section-title">Footwear | Limited offers</h2>
+
+      <app-headphones />
+
+      <span class="view-all-posts-top">
+        <a routerLink="/products" [queryParams]="{ main: 'electronics', category: 'headphones' }"
+          >See more deals</a
+        >
+      </span>
+    </section>
+  </div>
+
+  <section class="product-container">
+    <h2 class="section-title">
+      Trending products | Best offers
+      <span class="view-all-posts">
+        <a [routerLink]="['/products']" [queryParams]="{ latest: true }">See more items</a>
+      </span>
+    </h2>
+    <app-trending />
   </section>
 
   <section class="product-container">
@@ -33,14 +142,5 @@
       <span class="view-all-posts"><a routerLink="/products">See more items</a></span>
     </h2>
     <app-more-items />
-  </section>
-
-  <section class="product-container">
-    <h2 class="section-title">
-      Today Deals | Limited offers
-      <span class="view-all-posts"><a routerLink="/products">See more items</a></span>
-    </h2>
-
-    <app-today-deals />
   </section>
 </div>
