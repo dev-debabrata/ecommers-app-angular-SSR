@@ -12,12 +12,14 @@ import { Laptops } from '../../components/categories/electronics/laptops/laptops
 import { Footwear } from '../../components/categories/footwear/footwear';
 import { Headphones } from '../../components/categories/electronics/headphones/headphones';
 import { Trending } from '../../components/categories/trending/trending';
+import { TruncatePipe } from '../../pipes/truncate.pipe';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
   imports: [
     RouterLink,
+    TruncatePipe,
     Hero,
     Mobiles,
     Discount,

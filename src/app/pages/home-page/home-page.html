@@ -13,8 +13,10 @@
     </section>
 
     <section class="product-container-main">
-      <h2 class="section-title">Smart watches | Limited offers</h2>
-
+      <!-- <h2 class="section-title">Smart watches | Limited offers</h2> -->
+      <h2 class="section-title">
+        {{ 'Smart watches | Limited offers' | truncate: 24 }}
+      </h2>
       <app-smart-watches />
 
       <span class="view-all-posts-top">
