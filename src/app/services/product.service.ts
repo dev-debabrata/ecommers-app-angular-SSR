@@ -107,9 +107,7 @@ export class ProductService {
 
   getTrendingProducts(): Observable<Product[]> {
     return this.getProducts().pipe(
-      map(
-        (products) => products.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 10), // example: top 10 newest
-      ),
+      map((products) => products.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0))),
     );
   }
 
@@ -117,7 +115,7 @@ export class ProductService {
     return this.getProducts().pipe(
       map((products) =>
         products
-          .filter((p) => (p.discount || 0) > 0)
+          .filter((p) => (p.discount || 0) >= 70)
           .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)),
       ),
     );
