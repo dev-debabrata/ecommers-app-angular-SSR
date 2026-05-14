@@ -34,6 +34,8 @@ export class CheckoutAddress {
   userData = signal<User | null>(null);
   editingIndex = signal<number | null>(null);
   selectedAddress = signal<AddressUser | null>(null);
+  selectedIndex = signal<number | null>(null);
+
   showAll = signal(false);
   showAddressPopup = signal(false);
 
@@ -64,31 +66,49 @@ export class CheckoutAddress {
 
   ngAfterViewInit() {}
 
-  editAddress(addr: AddressUser) {
+  editAddress(addr: AddressUser, index: number) {
     this.newAddress.set({ ...addr });
-
-    const user = this.userData();
-    const realIndex =
-      user?.addresses?.findIndex((a) =>
-        a.id ? a.id === addr.id : a.address === addr.address && a.pinCode === addr.pinCode,
-      ) ?? -1;
-
-    this.editingIndex.set(realIndex !== -1 ? realIndex : null);
+    this.editingIndex.set(index);
     this.showAddressPopup.set(true);
   }
 
-  selectAddress(addr: AddressUser) {
+  // editAddress(addr: AddressUser) {
+  //   this.newAddress.set({ ...addr });
+
+  //   const user = this.userData();
+  //   const realIndex =
+  //     user?.addresses?.findIndex((a) =>
+  //       a.id ? a.id === addr.id : a.address === addr.address && a.pinCode === addr.pinCode,
+  //     ) ?? -1;
+
+  //   this.editingIndex.set(realIndex !== -1 ? realIndex : null);
+  //   this.showAddressPopup.set(true);
+  // }
+
+  selectAddress(addr: AddressUser, index: number) {
     this.selectedAddress.set(addr);
+    this.selectedIndex.set(index);
     this.addressSelected.emit(addr);
   }
 
+  // selectAddress(addr: AddressUser) {
+  //   this.selectedAddress.set(addr);
+  //   this.addressSelected.emit(addr);
+  // }
+
   visibleAddresses = computed(() => {
     const addresses = this.userData()?.addresses || [];
-
-    if (this.showAll()) return addresses;
-
-    return addresses.slice(0, 2);
+    const indexed = addresses.map((addr, index) => ({ addr, index }));
+    return this.showAll() ? indexed : indexed.slice(0, 2);
   });
+
+  // visibleAddresses = computed(() => {
+  //   const addresses = this.userData()?.addresses || [];
+
+  //   if (this.showAll()) return addresses;
+
+  //   return addresses.slice(0, 2);
+  // });
 
   toggleShowAll() {
     this.showAll.update((v) => !v);
@@ -161,18 +181,29 @@ export class CheckoutAddress {
       next: () => {
         this.userData.set({ ...u, addresses });
 
-        const idx = this.editingIndex();
+        const idx = this.editingIndex(); // ← capture before resetting
+        const newIndex = idx !== null ? idx : 0;
 
-        if (idx !== null) {
-          this.selectAddress(addresses[idx]);
-        } else {
-          this.selectAddress(addresses[0]);
-        }
+        this.editingIndex.set(null); // ← reset first
+        this.showAddressPopup.set(false);
 
+        this.selectAddress(addresses[newIndex], newIndex); // ← then select
         this.snackbar.success(idx !== null ? 'Address updated' : 'Address added');
 
-        this.editingIndex.set(null);
-        this.showAddressPopup.set(false);
+        // this.userData.set({ ...u, addresses });
+
+        // const idx = this.editingIndex();
+
+        // if (idx !== null) {
+        //   this.selectAddress(addresses[idx]);
+        // } else {
+        //   this.selectAddress(addresses[0]);
+        // }
+
+        // this.snackbar.success(idx !== null ? 'Address updated' : 'Address added');
+
+        // this.editingIndex.set(null);
+        // this.showAddressPopup.set(false);
       },
 
       error: () => this.snackbar.error('Failed to save address'),

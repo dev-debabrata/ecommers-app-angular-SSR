@@ -5,20 +5,9 @@ export interface CartItem {
   discount?: number;
   image: string;
   category: string;
+  subCategory: string;
   brand: string;
   stock: number;
   quantity: number;
   createdAt?: number;
 }
-
-// export interface CartItem {
-//   id: number;
-//   name: string;
-//   price: number;
-//   discountPercentage?: number;
-//   quantity: number;
-
-//   image: string;
-//   category: string;
-//   stock: number;
-// }

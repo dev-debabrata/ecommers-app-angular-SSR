@@ -61,6 +61,35 @@ export const CATEGORIES: Category[] = [
       { label: 'Rings', slug: 'rings' },
     ],
   },
+
+  {
+    name: 'Home & Living',
+    subcategories: [
+      { label: 'Furniture', slug: 'furniture' },
+      { label: 'Office Chair', slug: 'office-chair' },
+      { label: 'Home Decor', slug: 'home-decor' },
+      { label: 'Kitchenware', slug: 'kitchenware' },
+      { label: 'Bedding & Bath', slug: 'bedding-bath' },
+    ],
+  },
+
+  {
+    name: 'Baby & Kids',
+    subcategories: [
+      { label: 'Baby care', slug: 'baby-care' },
+      { label: 'Toys & Games', slug: 'toys-games' },
+      { label: 'Kids’ clothing & accessories', slug: 'kids-clothing-accessories' },
+    ],
+  },
+
+  {
+    name: 'Pet Supplies',
+    subcategories: [
+      { label: 'Pet food', slug: 'pet-food' },
+      { label: 'Grooming', slug: 'grooming' },
+      { label: 'Accessories', slug: 'accessories' },
+    ],
+  },
 ];
 
 ////////////////////////////////////////////////////////////////

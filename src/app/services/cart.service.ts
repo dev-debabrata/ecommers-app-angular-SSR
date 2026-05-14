@@ -56,6 +56,8 @@ export class CartService {
           ...item,
           quantity: item.quantity ?? 1,
           discount: item.discount ?? 0,
+          subCategory: item.subCategory ?? '',
+          // category: item.category ?? '',
         }))
         .sort((a: CartItem, b: CartItem) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
 
@@ -89,6 +91,7 @@ export class CartService {
         discount: product.discount || 0,
         image: product.image,
         category: product.category,
+        subCategory: product.subCategory,
         stock: product.stock,
         createdAt: existing.createdAt || Date.now(),
       };
@@ -107,6 +110,7 @@ export class CartService {
       discount: product.discount || 0,
       image: product.image,
       category: product.category,
+      subCategory: product.subCategory,
       brand: product.brand,
       stock: product.stock,
       quantity: 1,

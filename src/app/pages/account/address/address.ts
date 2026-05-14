@@ -75,14 +75,17 @@ export class Address {
 
     if (!currentUser?.uid) return;
 
+    const pinCode = String(addr.pinCode ?? '').trim();
+    const phone = String(addr.phone ?? '').trim();
+
     if (
       !addr.fullName.trim() ||
       !addr.email.trim() ||
-      !addr.phone.trim() ||
+      !phone ||
       !addr.address.trim() ||
       !addr.city.trim() ||
       !addr.state.trim() ||
-      !addr.pinCode.trim()
+      !pinCode
     ) {
       this.snackBar.error('Please fill all required fields');
       return;
@@ -93,12 +96,12 @@ export class Address {
     const cleanAddress: AddressUser = {
       fullName: addr.fullName.trim(),
       email: addr.email.trim(),
-      phone: addr.phone.trim(),
+      phone: phone,
       address: addr.address.trim(),
       landmark: addr.landmark?.trim() || '',
       city: addr.city.trim(),
       state: addr.state.trim(),
-      pinCode: addr.pinCode.trim(),
+      pinCode: pinCode,
     };
 
     if (this.editAddressIndex() !== null) {

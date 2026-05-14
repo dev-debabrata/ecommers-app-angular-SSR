@@ -30,7 +30,9 @@
               </span>
 
               <!-- CATEGORY -->
-              <span class="small-text"> <b>Category:</b> {{ item.category }} </span>
+              <span class="small-text">
+                <b>Category:</b> {{ item.subCategory | categoryLabel }}
+              </span>
               <span class="brand"><strong>Brand:</strong> {{ item.brand }}</span>
 
               <!-- PRICE -->

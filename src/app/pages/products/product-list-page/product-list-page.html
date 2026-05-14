@@ -53,7 +53,11 @@
             <span class="rating-number">({{ product.rating ?? 0 }})</span>
           </div>
 
-          <p class="category"><strong>Category:</strong> {{ product.category }}</p>
+          <p class="category">
+            <strong>Category:</strong> {{ product.subCategory | categoryLabel }}
+          </p>
+
+          <!-- <p class="category"><strong>Category:</strong> {{ product.subCategory }}</p> -->
           <p class="brand"><strong>Brand:</strong> {{ product.brand }}</p>
 
           <div class="price-box">

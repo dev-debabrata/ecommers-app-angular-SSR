@@ -32,6 +32,7 @@ export class CheckoutPage implements OnInit {
 
   user = signal<User | null>(null);
   selectedAddress = signal<OrderAddress | null>(null);
+  orderPlaced = signal(false);
 
   checkoutForm = signal<{ shippingMethod: 'free' | 'express' }>({
     shippingMethod: 'free',
@@ -39,7 +40,11 @@ export class CheckoutPage implements OnInit {
 
   constructor() {
     effect(() => {
-      if (this.cartService.cartLoaded() && this.cartService.cart().length === 0) {
+      if (
+        this.cartService.cartLoaded() &&
+        this.cartService.cart().length === 0 &&
+        !this.orderPlaced()
+      ) {
         this.router.navigate(['/']);
       }
     });
@@ -125,8 +130,9 @@ export class CheckoutPage implements OnInit {
     const orderSub = this.orderService.createOrder(uid, order as Order).subscribe({
       next: (res: Order) => {
         this.loaderService.hide();
+        this.orderPlaced.set(true);
         this.cartService.clearCart();
-        this.snackbar.success('Order placed successfully!');
+        this.snackbar.success('Order placed!');
         this.router.navigate(['/order-success', res.id]);
       },
       error: (err) => {
@@ -136,6 +142,8 @@ export class CheckoutPage implements OnInit {
       },
     });
 
-    this.destroyRef.onDestroy(() => orderSub.unsubscribe());
+    this.destroyRef.onDestroy(() => {
+      orderSub.unsubscribe();
+    });
   }
 }

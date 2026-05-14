@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, switchMap, of, Subscription, startWith } from 'rxjs';
 import { ProductService } from '../../services/product.service';
+import { CATEGORIES } from '../../data/category.data';
 
 @Component({
   selector: 'app-breadcrumb',
@@ -129,9 +130,39 @@ export class Breadcrumb implements OnInit, OnDestroy {
     return { staticCrumbs, productId, main, sub };
   }
 
-  private toLabel(s: string): string {
-    return s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1);
+  private toLabel(value: string): string {
+    if (value === 'all') return 'All';
+
+    const normalized = value.toLowerCase().trim();
+
+    // Main category
+    const mainCategory = CATEGORIES.find(
+      (cat) => cat.name.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-') === normalized,
+    );
+
+    if (mainCategory) {
+      return mainCategory.name;
+    }
+
+    // Subcategory
+    for (const cat of CATEGORIES) {
+      const sub = cat.subcategories.find((s) => s.slug === normalized);
+
+      if (sub) {
+        return sub.label;
+      }
+    }
+
+    // fallback
+    return normalized
+      .split('-')
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(' ');
   }
+
+  // private toLabel(s: string): string {
+  //   return s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1);
+  // }
 
   ngOnDestroy() {
     this.sub?.unsubscribe();

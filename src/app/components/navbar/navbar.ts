@@ -110,10 +110,11 @@ export class Navbar {
   //   this.closeDropdown();
   // }
 
-  goToMainCategory(cat: string) {
+  goToMainCategory(cat: Category) {
     this.router.navigate(['/products'], {
       queryParams: {
-        main: cat.toLowerCase().trim(),
+        main: cat.name.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-'),
+        // main: cat.toLowerCase().trim(),
         category: 'all',
       },
     });
@@ -124,7 +125,8 @@ export class Navbar {
   goToSubCategory(sub: { label: string; slug: string }) {
     this.router.navigate(['/products'], {
       queryParams: {
-        main: this.selectedCategory!.name.toLowerCase().trim(),
+        main: this.selectedCategory!.name.toLowerCase().replace(/ & /g, '-').replace(/\s+/g, '-'),
+        // main: this.selectedCategory!.name.toLowerCase().trim(),
         category: sub.slug,
       },
     });

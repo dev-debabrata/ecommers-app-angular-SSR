@@ -8,11 +8,12 @@ import { Rating } from '../../utils/rating.util';
 import { Product } from '../../models/product.model';
 import { SnackbarService } from '../../services/snackbar.service';
 import { ProductService } from '../../services/product.service';
+import { CategoryLabelPipe } from '../../pipes/category-label.pipe';
 
 @Component({
   selector: 'app-wishlist-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CategoryLabelPipe],
   templateUrl: './wishlist-page.html',
   styleUrl: './wishlist-page.css',
 })

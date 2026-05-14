@@ -15,11 +15,12 @@ import { AuthService } from '../../../services/auth-user.service';
 import { LoaderService } from '../../../services/loader.service';
 import { SnackbarService } from '../../../services/snackbar.service';
 import { CATEGORIES } from '../../../data/category.data';
+import { CategoryLabelPipe } from '../../../pipes/category-label.pipe';
 
 @Component({
   selector: 'app-product-list-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, TruncatePipe, Highlight, Error, MatIcon],
+  imports: [CommonModule, FormsModule, TruncatePipe, Highlight, Error, MatIcon, CategoryLabelPipe],
   templateUrl: './product-list-page.html',
   styleUrl: './product-list-page.css',
 })

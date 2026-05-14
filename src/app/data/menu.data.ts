@@ -1,5 +1,6 @@
 export interface MenuItem {
   name: string;
+  category?: string;
   hasArrow?: boolean;
 }
 
@@ -27,10 +28,17 @@ export const MENU: MenuSection[] = [
   {
     title: 'Shop By Category',
     items: [
-      { name: 'Mobiles, Computers', hasArrow: true },
-      { name: 'TV, Appliances, Electronics', hasArrow: true },
-      { name: "Men's Fashion", hasArrow: true },
-      { name: "Women's Fashion", hasArrow: true },
+      { name: 'Electronics', category: 'electronics', hasArrow: true },
+      { name: 'Fashion', category: 'fashion', hasArrow: true },
+      { name: 'Bags', category: 'bags', hasArrow: true },
+      { name: 'Footwear', category: 'footwear', hasArrow: true },
+      { name: 'Groceries', category: 'groceries', hasArrow: true },
+      { name: 'Beauty', category: 'beauty', hasArrow: true },
+      { name: 'Home & Living', category: 'home-living', hasArrow: true },
+      // { name: 'Mobiles, Computers', category: 'electronics', hasArrow: true },
+      // { name: 'TV, Appliances, Electronics', hasArrow: true },
+      // { name: "Men's Fashion, Women's Fashion", hasArrow: true },
+      // { name: "Women's Fashion", hasArrow: true },
     ],
   },
 ];

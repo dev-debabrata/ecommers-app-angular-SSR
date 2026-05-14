@@ -12,11 +12,12 @@ import { CartService } from '../../../services/cart.service';
 import { WishlistService } from '../../../services/wishlist.service';
 import { LoaderService } from '../../../services/loader.service';
 import { SnackbarService } from '../../../services/snackbar.service';
+import { CategoryLabelPipe } from '../../../pipes/category-label.pipe';
 
 @Component({
   selector: 'app-product-detail-page',
   standalone: true,
-  imports: [CommonModule, Error, MatIcon],
+  imports: [CommonModule, Error, MatIcon, CategoryLabelPipe],
   templateUrl: './product-detail-page.html',
   styleUrl: './product-detail-page.css',
 })

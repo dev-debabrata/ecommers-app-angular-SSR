@@ -125,7 +125,8 @@ export class SignupPage {
 
       error: (error: any) => {
         if (error.code === 'auth/email-already-in-use') {
-          this.snackBar.error('Email already exists');
+          this.email.setErrors({ emailTaken: true });
+          // this.snackBar.error('Email already exists');
         } else {
           this.snackBar.error('Signup failed');
         }

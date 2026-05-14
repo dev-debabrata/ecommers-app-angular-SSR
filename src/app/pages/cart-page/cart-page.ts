@@ -4,11 +4,12 @@ import { Router } from '@angular/router';
 
 import { CartService } from '../../services/cart.service';
 import { CartItem } from '../../models/cart.model';
+import { CategoryLabelPipe } from '../../pipes/category-label.pipe';
 
 @Component({
   selector: 'app-cart-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CategoryLabelPipe],
   templateUrl: './cart-page.html',
   styleUrl: './cart-page.css',
 })
