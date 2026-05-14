@@ -13,6 +13,10 @@ import { Footwear } from '../../components/categories/footwear/footwear';
 import { Headphones } from '../../components/categories/electronics/headphones/headphones';
 import { Trending } from '../../components/categories/trending/trending';
 import { TruncatePipe } from '../../pipes/truncate.pipe';
+import { Beauty } from '../../components/categories/beauty/beauty';
+import { HomeLiving } from '../../components/categories/home-living/home-living';
+import { Jewellery } from '../../components/categories/jewellery/jewellery';
+import { BabyKids } from '../../components/categories/baby-kids/baby-kids';
 
 @Component({
   selector: 'app-home-page',
@@ -30,6 +34,10 @@ import { TruncatePipe } from '../../pipes/truncate.pipe';
     Footwear,
     Headphones,
     Trending,
+    Beauty,
+    HomeLiving,
+    Jewellery,
+    BabyKids,
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',

@@ -13,10 +13,8 @@
     </section>
 
     <section class="product-container-main">
-      <!-- <h2 class="section-title">Smart watches | Limited offers</h2> -->
-      <h2 class="section-title">
-        {{ 'Smart watches | Limited offers' | truncate: 24 }}
-      </h2>
+      <h2 class="section-title">{{ 'Smart watches | Limited offers' | truncate: 24 }}</h2>
+
       <app-smart-watches />
 
       <span class="view-all-posts-top">
@@ -42,6 +40,42 @@
     </section>
 
     <section class="product-container-main">
+      <h2 class="section-title">Headphones | Limited offers</h2>
+
+      <app-headphones />
+
+      <span class="view-all-posts-top">
+        <a routerLink="/products" [queryParams]="{ main: 'electronics', category: 'headphones' }"
+          >See more deals</a
+        >
+      </span>
+    </section>
+  </div>
+
+  <section class="product-container">
+    <h2 class="section-title">
+      Up to 70% off | Best offers
+      <span class="view-all-posts"
+        ><a [routerLink]="['/products']" [queryParams]="{ discount: 50 }">See more items</a></span
+      >
+    </h2>
+    <app-discount />
+  </section>
+
+  <section class="product-container">
+    <h2 class="section-title">
+      Home Deals Up to 50% Off
+      <span class="view-all-posts"
+        ><a [routerLink]="['/products']" [queryParams]="{ main: 'home-living' }"
+          >See more items</a
+        ></span
+      >
+    </h2>
+    <app-home-living />
+  </section>
+
+  <div class="home-container-top">
+    <section class="product-container-main">
       <h2 class="section-title">Footwear | Limited offers</h2>
 
       <app-footwear />
@@ -50,64 +84,34 @@
         <a routerLink="/products" [queryParams]="{ main: 'footwear' }">See more deals</a>
       </span>
     </section>
-  </div>
 
-  <section class="product-container">
-    <h2 class="section-title">
-      Up to 80% off | Best offers
-      <span class="view-all-posts"
-        ><a [routerLink]="['/products']" [queryParams]="{ discount: 50 }">See more items</a></span
-      >
-    </h2>
-    <app-discount />
-  </section>
-
-  <div class="home-container-top">
     <section class="product-container-main">
-      <h2 class="section-title">Footwear | Limited offers</h2>
+      <h2 class="section-title">Beauty | Limited offers</h2>
 
-      <app-headphones />
+      <app-beauty />
 
       <span class="view-all-posts-top">
-        <a routerLink="/products" [queryParams]="{ main: 'electronics', category: 'headphones' }"
-          >See more deals</a
-        >
+        <a routerLink="/products" [queryParams]="{ main: 'beauty' }">See more deals</a>
       </span>
     </section>
 
     <section class="product-container-main">
-      <h2 class="section-title">Footwear | Limited offers</h2>
+      <h2 class="section-title">Jewellery | Limited offers</h2>
 
-      <app-headphones />
+      <app-jewellery />
 
       <span class="view-all-posts-top">
-        <a routerLink="/products" [queryParams]="{ main: 'electronics', category: 'headphones' }"
-          >See more deals</a
-        >
+        <a routerLink="/products" [queryParams]="{ main: 'jewellery' }">See more deals</a>
       </span>
     </section>
 
     <section class="product-container-main">
-      <h2 class="section-title">Footwear | Limited offers</h2>
+      <h2 class="section-title">Baby & Kids | Limited offers</h2>
 
-      <app-headphones />
-
-      <span class="view-all-posts-top">
-        <a routerLink="/products" [queryParams]="{ main: 'electronics', category: 'headphones' }"
-          >See more deals</a
-        >
-      </span>
-    </section>
-
-    <section class="product-container-main">
-      <h2 class="section-title">Footwear | Limited offers</h2>
-
-      <app-headphones />
+      <app-baby-kids />
 
       <span class="view-all-posts-top">
-        <a routerLink="/products" [queryParams]="{ main: 'electronics', category: 'headphones' }"
-          >See more deals</a
-        >
+        <a routerLink="/products" [queryParams]="{ main: 'baby-kids' }">See more deals</a>
       </span>
     </section>
   </div>
