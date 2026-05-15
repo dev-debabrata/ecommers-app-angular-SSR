@@ -39,7 +39,7 @@ export class ProductListPage implements OnInit {
 
   private products = signal<Product[]>([]);
   errorMsg = signal(false);
-  searchTerm = signal('');
+  // searchTerm = signal('');
   minDiscount = signal(0);
   selectedCategory = signal('all');
   selectedMainCategory = signal('all');
@@ -63,22 +63,22 @@ export class ProductListPage implements OnInit {
   });
 
   filteredProducts = computed(() => {
-    const search = this.searchTerm().toLowerCase();
+    // const search = this.searchTerm().toLowerCase();
     const mainCat = this.selectedMainCategory();
     const subCat = this.selectedCategory();
     const discount = this.minDiscount();
     const latest = this.isLatest();
 
     let result = this.products().filter((product) => {
-      const matchesSearch = product.title.toLowerCase().includes(search);
+      // const matchesSearch = product.title.toLowerCase().includes(search);
 
       const matchesMain = mainCat === 'all' || product.category?.toLowerCase().trim() === mainCat;
 
       const matchesSub = subCat === 'all' || product.subCategory?.toLowerCase().trim() === subCat;
 
       const matchesDiscount = (product.discount ?? 0) >= discount;
-
-      return matchesSearch && matchesMain && matchesSub && matchesDiscount;
+      // matchesSearch &&
+      return matchesMain && matchesSub && matchesDiscount;
     });
 
     if (latest) {
@@ -182,12 +182,12 @@ export class ProductListPage implements OnInit {
     return Rating;
   }
 
-  get currentSearchTerm() {
-    return this.searchTerm();
-  }
-  set currentSearchTerm(val: string) {
-    this.searchTerm.set(val);
-  }
+  // get currentSearchTerm() {
+  //   return this.searchTerm();
+  // }
+  // set currentSearchTerm(val: string) {
+  //   this.searchTerm.set(val);
+  // }
 
   get currentSelectedCategory() {
     return this.selectedCategory();
