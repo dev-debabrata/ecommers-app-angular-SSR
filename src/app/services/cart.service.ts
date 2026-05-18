@@ -162,6 +162,25 @@ export class CartService {
 
     this.cart.set([]);
   }
+
+  addCartItemToCart(item: CartItem) {
+    const uid = this.auth.currentUser?.uid;
+    if (!uid) return;
+
+    const existing = this.cart().find((i) => i.id === item.id);
+    if (existing) {
+      this.updateQuantity(item.id, existing.quantity + 1);
+      return;
+    }
+
+    const cartItem = { ...item, quantity: 1, createdAt: Date.now() };
+    this.cart.update((items) => [...items, cartItem]);
+    from(setDoc(doc(this.firestore, `users/${uid}/cart/${item.id}`), cartItem)).subscribe();
+  }
+
+  saveForLater(item: CartItem) {
+    this.removeItem(item.id);
+  }
 }
 
 // import { computed, inject, Injectable, signal, PLATFORM_ID } from '@angular/core';
