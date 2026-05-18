@@ -12,6 +12,10 @@
 
 .cart-left {
   flex: 1;
+}
+
+.cart-left-side {
+  flex: 1;
   background: #fff;
   color: #0f1111;
   padding: 16px;

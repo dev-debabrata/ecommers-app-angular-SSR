@@ -1,24 +1,28 @@
-import { Component, inject } from '@angular/core';
+import { Component, Inject, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { CartService } from '../../services/cart.service';
 import { CartItem } from '../../models/cart.model';
 import { CategoryLabelPipe } from '../../pipes/category-label.pipe';
+import { SaveLaterService } from '../../services/save-later.service';
+import { SaveLater } from '../../components/save-later/save-later';
 
 @Component({
   selector: 'app-cart-page',
   standalone: true,
-  imports: [CommonModule, CategoryLabelPipe],
+  imports: [CommonModule, CategoryLabelPipe, SaveLater],
   templateUrl: './cart-page.html',
   styleUrl: './cart-page.css',
 })
 export class CartPage {
   private router = inject(Router);
   private cartService = inject(CartService);
+  private saveLaterService = Inject(SaveLaterService);
 
   cart = this.cartService.cart;
   total = this.cartService.totalPrice;
+  cartItemCount = this.cartService.itemCount;
 
   getDiscountPrice(item: CartItem): number {
     return this.cartService.getDiscountPrice(item);
@@ -43,5 +47,10 @@ export class CartPage {
 
   viewDetails(id: string) {
     this.router.navigate(['/products', id]);
+  }
+
+  saveForLater(item: CartItem) {
+    this.cartService.removeItem(item.id);
+    this.saveLaterService.saveForLater(item);
   }
 }

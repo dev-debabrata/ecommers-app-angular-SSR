@@ -3,57 +3,51 @@
   <div class="cart-layout">
     <!-- LEFT SIDE -->
     <div class="cart-left">
-      <h2>
-        {{ cart().length > 0 ? 'Shopping Cart' : 'Your Cart is empty' }}
-      </h2>
+      <div class="cart-left-side">
+        <h2>
+          {{ cart().length > 0 ? 'Shopping Cart' : 'Your Cart is empty' }} ({{ cartItemCount() }})
+        </h2>
 
-      <div class="divider"></div>
+        <div class="divider"></div>
 
-      <div class="cart-items">
-        @for (item of cart(); track item.id) {
-          <div class="cart-item">
-            <!-- IMAGE -->
-            <div (click)="viewDetails(item.id)" class="cart-image">
-              <img [src]="item.image" [alt]="item.name" />
-            </div>
-
-            <!-- DETAILS -->
-            <div class="cart-details">
-              <!-- TITLE -->
-              <p (click)="viewDetails(item.id)" class="cart-title">
-                {{ item.name }}
-              </p>
-
-              <!-- STOCK -->
-              <span class="in-stock">
-                {{ item.stock > 0 ? 'In Stock' : 'Out of Stock' }}
-              </span>
-
-              <!-- CATEGORY -->
-              <span class="small-text">
-                <b>Category:</b> {{ item.subCategory | categoryLabel }}
-              </span>
-              <span class="brand"><strong>Brand:</strong> {{ item.brand }}</span>
-
-              <!-- PRICE -->
-
-              <div class="price-box">
-                <div>
-                  @if (item.discount && item.discount > 0) {
-                    <span class="discount"> -{{ item.discount }}% </span>
-                  }
-
-                  <span class="final-price">
-                    ₹{{ getDiscountPrice(item) | number: '1.0-0' }}.00
-                  </span>
-                </div>
-
-                <p class="original-price-mrp">
-                  M.R.P.:
-                  <span class="original-price"> ₹{{ item.price | number: '1.0-0' }}.00 </span>
-                </p>
+        <div class="cart-items">
+          @for (item of cart(); track item.id) {
+            <div class="cart-item">
+              <div (click)="viewDetails(item.id)" class="cart-image">
+                <img [src]="item.image" [alt]="item.name" />
               </div>
-              <!-- <span class="small-text">
+
+              <div class="cart-details">
+                <p (click)="viewDetails(item.id)" class="cart-title">
+                  {{ item.name }}
+                </p>
+
+                <span class="in-stock">
+                  {{ item.stock > 0 ? 'In Stock' : 'Out of Stock' }}
+                </span>
+
+                <span class="small-text">
+                  <b>Category:</b> {{ item.subCategory | categoryLabel }}
+                </span>
+                <span class="brand"><strong>Brand:</strong> {{ item.brand }}</span>
+
+                <div class="price-box">
+                  <div>
+                    @if (item.discount && item.discount > 0) {
+                      <span class="discount"> -{{ item.discount }}% </span>
+                    }
+
+                    <span class="final-price">
+                      ₹{{ getDiscountPrice(item) | number: '1.0-0' }}.00
+                    </span>
+                  </div>
+
+                  <p class="original-price-mrp">
+                    M.R.P.:
+                    <span class="original-price"> ₹{{ item.price | number: '1.0-0' }}.00 </span>
+                  </p>
+                </div>
+                <!-- <span class="small-text">
                 <b>Price:</b> ₹{{ item.price | number: '1.2-2' }}
                 <span class="discount">
                   @if (item.discount) {
@@ -62,41 +56,43 @@
                 </span>
               </span> -->
 
-              <!-- QUANTITY + ACTIONS -->
-              <div class="actions">
-                <select
-                  [id]="'qty-' + item.id"
-                  [name]="'qty-' + item.id"
-                  (change)="changeQty(item.id, $event)"
-                >
-                  @for (i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track i) {
-                    <option [value]="i" [selected]="i === item.quantity">
-                      {{ i }}
-                    </option>
-                  }
-                </select>
+                <!-- QUANTITY + ACTIONS -->
+                <div class="actions">
+                  <select
+                    [id]="'qty-' + item.id"
+                    [name]="'qty-' + item.id"
+                    (change)="changeQty(item.id, $event)"
+                  >
+                    @for (i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; track i) {
+                      <option [value]="i" [selected]="i === item.quantity">
+                        {{ i }}
+                      </option>
+                    }
+                  </select>
 
-                <span class="action-link" (click)="remove(item.id)"> Delete </span>
+                  <span class="action-link" (click)="remove(item.id)"> Delete </span>
 
-                <span class="action-link"> Save for later </span>
+                  <span class="action-link" (click)="saveForLater(item)"> Save for later </span>
+                </div>
+              </div>
+
+              <div class="price">
+                ₹ {{ getDiscountPrice(item) * item.quantity | number: '1.0-0' }}.00
               </div>
             </div>
+          }
+        </div>
 
-            <!-- PRICE TOTAL -->
-            <div class="price">
-              ₹ {{ getDiscountPrice(item) * item.quantity | number: '1.0-0' }}.00
-            </div>
-          </div>
-        }
+        <div class="divider"></div>
+
+        <div class="subtotal-price">
+          <p class="subtotal">
+            Subtotal ({{ cart().length }} items): ₹ {{ total() | number: '1.0-0' }}.00
+          </p>
+        </div>
       </div>
 
-      <div class="divider"></div>
-
-      <div class="subtotal-price">
-        <p class="subtotal">
-          Subtotal ({{ cart().length }} items): ₹ {{ total() | number: '1.0-0' }}.00
-        </p>
-      </div>
+      <app-save-later />
     </div>
 
     <!-- RIGHT SIDE -->
