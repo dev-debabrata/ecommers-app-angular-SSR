@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { CategoryLabelPipe } from '../../pipes/category-label.pipe';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+
+import { CategoryLabelPipe } from '../../pipes/category-label.pipe';
 import { SaveLaterService } from '../../services/save-later.service';
 import { CartService } from '../../services/cart.service';
-import { Router } from '@angular/router';
 import { CartItem } from '../../models/cart.model';
 
 @Component({
