@@ -64,14 +64,14 @@
 
           @for (order of orders(); track $index) {
             <tr>
-              <td>{{ order.id }}</td>
+              <td>{{ order.orderId }}</td>
               <td>{{ order.createdAt | date }}</td>
               <td>₹{{ order.total | number: '1.0-0' }}.00</td>
               <td>{{ order.status || 'Placed' }}</td>
               <td>
                 <!-- <button [routerLink]="['/admin/orders/:id']">View</button> -->
                 <button
-                  [routerLink]="['/admin/orders', order.id]"
+                  [routerLink]="['/admin/orders', order.orderId]"
                   [queryParams]="{ userId: order.userId }"
                 >
                   View

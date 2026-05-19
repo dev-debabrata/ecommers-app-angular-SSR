@@ -133,7 +133,7 @@ export class CheckoutPage implements OnInit {
         this.orderPlaced.set(true);
         this.cartService.clearCart();
         this.snackbar.success('Order placed!');
-        this.router.navigate(['/order-success', res.id]);
+        this.router.navigate(['/order-success', res.orderId]);
       },
       error: (err) => {
         this.loaderService.hide();

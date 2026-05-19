@@ -8,7 +8,7 @@
       <div class="order-box">
         <h3>Order Details</h3>
 
-        <p><strong>Order ID:</strong> {{ order.id }}</p>
+        <p><strong>Order ID:</strong> {{ order.orderId }}</p>
         <p><strong>Date:</strong> {{ order.createdAt | date: 'medium' }}</p>
         <p><strong>Total:</strong> ₹{{ order.total | number: '1.0-0' }}.00</p>
         <p><strong>Status:</strong> {{ order.status }}</p>

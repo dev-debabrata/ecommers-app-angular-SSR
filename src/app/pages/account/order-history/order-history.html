@@ -1,9 +1,9 @@
 <h2>My Orders</h2>
 
 @if (orders().length > 0) {
-  @for (order of orders(); track order.id) {
+  @for (order of orders(); track order.orderId) {
     <div class="card-box">
-      <p><strong>Order ID:</strong> {{ order.id }}</p>
+      <p><strong>Order ID:</strong> {{ order.orderId }}</p>
 
       <p>
         <strong>Placed On:</strong>

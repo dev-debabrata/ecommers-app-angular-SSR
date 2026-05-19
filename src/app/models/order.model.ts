@@ -19,7 +19,7 @@ export interface OrderAddress {
 }
 
 export interface Order {
-  id?: string;
+  orderId?: string;
   userId: string;
   userEmail?: string;
   items: OrderItem[];

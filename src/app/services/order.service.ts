@@ -29,7 +29,7 @@ export class OrderService {
 
     const fullOrder: Order = {
       ...order,
-      id: orderId,
+      orderId: orderId,
       userId,
       createdAt: Date.now(),
       status: 'pending',
@@ -59,7 +59,7 @@ export class OrderService {
         if (!snap.exists()) return null;
 
         return {
-          id: snap.id,
+          orderId: snap.id,
           ...snap.data(),
         } as Order;
       }),

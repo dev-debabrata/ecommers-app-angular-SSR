@@ -100,9 +100,9 @@
             </tr>
           </thead>
           <tbody>
-            @for (order of recentOrders(); track order.id) {
+            @for (order of recentOrders(); track order.orderId) {
               <tr>
-                <td class="dash-table__id">#{{ order.id | slice: 0 : 8 }}</td>
+                <td class="dash-table__id">#{{ order.orderId | slice: 0 : 8 }}</td>
                 <td class="dash-table__user">{{ order.userEmail }}</td>
                 <td class="dash-table__amount">₹{{ order.total | number: '1.0-0' }}</td>
                 <td class="dash-table__date">{{ order.createdAt | date: 'dd MMM, y' }}</td>
@@ -119,7 +119,7 @@
                 </td>
                 <td>
                   <a
-                    [routerLink]="['/admin/orders', order.id]"
+                    [routerLink]="['/admin/orders', order.orderId]"
                     [queryParams]="{ userId: order.userId }"
                     class="dash-action-btn"
                   >

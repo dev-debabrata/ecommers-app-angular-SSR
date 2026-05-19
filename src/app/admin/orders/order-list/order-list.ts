@@ -58,11 +58,13 @@ export class OrderList implements OnInit {
     const status = (event.target as HTMLSelectElement).value as Order['status'];
 
     this.orderService
-      .updateOrderStatus(order.userId, order.id!, order.id!, status)
+      .updateOrderStatus(order.userId, order.orderId!, order.orderId!, status)
       // .updateOrderStatus(order.userId, order.userOrderId, order.id, status)
       .subscribe({
         next: () => {
-          const updated = this.orders().map((o) => (o.id === order.id ? { ...o, status } : o));
+          const updated = this.orders().map((o) =>
+            o.orderId === order.orderId ? { ...o, status } : o,
+          );
           this.orders.set(updated);
         },
         error: (err) => console.log(err),
