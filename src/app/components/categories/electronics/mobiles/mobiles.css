@@ -41,8 +41,9 @@
   align-items: center;
   justify-content: center;
 
-  width: 42px;
-  height: 42px;
+  /* width: 42px;
+  height: 42px; */
+  padding: 8px;
   border-radius: 50%;
 
   background: rgba(0, 0, 0, 0.6);
