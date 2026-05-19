@@ -1,12 +1,11 @@
 import { Component, Inject, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-
-import { CartService } from '../../services/cart.service';
-import { CartItem } from '../../models/cart.model';
-import { CategoryLabelPipe } from '../../pipes/category-label.pipe';
-import { SaveLaterService } from '../../services/save-later.service';
-import { SaveLater } from '../../components/save-later/save-later';
+import { CartService } from '../../../services/cart.service';
+import { SaveLaterService } from '../../../services/save-later.service';
+import { CartItem } from '../../../models/cart.model';
+import { CategoryLabelPipe } from '../../../pipes/category-label.pipe';
+import { SaveLater } from '../../../components/save-later/save-later';
 
 @Component({
   selector: 'app-cart-page',

@@ -5,13 +5,15 @@ import { LoginPage } from './pages/auth/login-page/login-page';
 import { SignupPage } from './pages/auth/signup-page/signup-page';
 import { NotFound } from './components/not-found/not-found';
 import { ProductListPage } from './pages/products/product-list-page/product-list-page';
-import { CartPage } from './pages/cart-page/cart-page';
+
 import { authGuard } from './guards/auth-guard';
 import { AboutPage } from './pages/about-page/about-page';
 import { ContactPage } from './pages/contact-page/contact-page';
 import { ProfilePage } from './pages/account/profile-page/profile-page';
-import { OrderSuccessPage } from './pages/cart-page/checkout/order-success-page/order-success-page';
+
 import { CustomerLayout } from './layouts/customer-layout/customer-layout';
+import { CartPage } from './pages/cart/cart-page/cart-page';
+import { OrderSuccessPage } from './pages/cart/order-success-page/order-success-page';
 
 export const routes: Routes = [
   {
@@ -86,7 +88,7 @@ export const routes: Routes = [
           {
             path: 'checkout',
             loadComponent: () =>
-              import('./pages/cart-page/checkout/checkout-page/checkout-page').then(
+              import('./pages/cart/checkout/checkout-page/checkout-page').then(
                 (m) => m.CheckoutPage,
               ),
             data: { breadcrumb: 'Checkout' },
