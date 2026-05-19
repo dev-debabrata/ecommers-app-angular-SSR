@@ -164,7 +164,7 @@
 .header-icons {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 }
 
 .profile {
@@ -178,16 +178,16 @@
   flex-direction: column;
 }
 
-.icon {
+.icons {
   display: flex;
   align-items: center;
   position: relative;
   font-size: 22px;
   cursor: pointer;
-  gap: 1rem;
+  gap: 10px;
 }
 
-.icon a {
+.icons a {
   font-size: 14px;
   padding: 8px;
   height: 40px;
@@ -201,7 +201,7 @@
   color: black;
 }
 
-.icon a:hover {
+.icons a:hover {
   border: 1px solid black;
 }
 
@@ -220,7 +220,7 @@
   padding: 2px 5px;
 } */
 
-.login-section {
+/* .login-section {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -230,7 +230,7 @@
   position: relative;
   gap: 10px;
   box-sizing: border-box;
-}
+} */
 
 .login-section span {
   font-weight: 500;
@@ -279,8 +279,8 @@
 
 .dropdown {
   position: absolute;
-  top: 50px;
-  right: 50px;
+  top: 55px;
+  right: 200px;
   width: 160px;
 
   background: #ffffff;
@@ -346,36 +346,38 @@
   }
 }
 
-.cart-icon {
-  position: relative;
-  display: inline-block;
-}
-
-.cart-badge {
-  position: absolute;
-  top: -8px;
-  right: -10px;
-
-  background: red;
-  color: white;
-  font-size: 14px;
-  font-weight: bold;
-
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
+.cart-icon,
 .fav-icon {
   position: relative;
   display: inline-block;
 }
 
+.cart-badge,
 .fav-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+
+  background: red;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* .fav-icon {
+  position: relative;
+  display: inline-block;
+} */
+
+/* .fav-badge {
   position: absolute;
   top: -8px;
   right: -10px;
@@ -392,4 +394,4 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
+} */

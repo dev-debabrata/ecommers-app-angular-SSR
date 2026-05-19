@@ -57,10 +57,11 @@
                 <div class="overlay" (click)="closeMenu()"></div>
                 <div class="dropdown">
                   <button (click)="viewProfile()">
-                    <mat-icon class="person">person_outline</mat-icon>My Account
+                    <mat-icon class="material-icons-outlined person">person_outline</mat-icon>My
+                    Account
                   </button>
                   <button (click)="logout()">
-                    <mat-icon class="logout">logout</mat-icon>Logout
+                    <mat-icon class="material-icons-outlined logout">logout</mat-icon>Logout
                   </button>
                 </div>
               }
@@ -69,19 +70,31 @@
         }
       </div>
 
-      <div class="icon">
+      <div class="icons">
         <a routerLink="/wishlist" class="fav-icon">
           <mat-icon class="material-icons-outlined">favorite_border</mat-icon>
-          <span class="cart-badge">
+
+          @if (isLoggedIn) {
+            <span class="fav-badge">
+              {{ wishlistCount() }}
+            </span>
+          }
+          <!-- <span class="cart-badge">
             {{ isLoggedIn ? wishlistCount() : 0 }}
-          </span>
+          </span> -->
         </a>
 
         <a routerLink="/cart" class="cart-icon">
           <mat-icon class="material-icons-outlined">shopping_cart</mat-icon>
-          <span class="cart-badge">
+
+          @if (isLoggedIn) {
+            <span class="cart-badge">
+              {{ itemCount() }}
+            </span>
+          }
+          <!-- <span class="cart-badge">
             {{ isLoggedIn ? itemCount() : 0 }}
-          </span>
+          </span> -->
         </a>
       </div>
     </div>

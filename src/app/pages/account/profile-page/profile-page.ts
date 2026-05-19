@@ -8,6 +8,7 @@ import { Address } from '../address/address';
 import { OrderHistory } from '../order-history/order-history';
 import { User } from '../../../models/user.model';
 import { Order } from '../../../models/order.model';
+import { SnackbarService } from '../../../services/snackbar.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -21,6 +22,7 @@ export class ProfilePage implements OnInit {
   private orderService = inject(OrderService);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
+  private snackBar = inject(SnackbarService);
 
   user: User | null = null;
   orders: Order[] = [];
@@ -64,7 +66,14 @@ export class ProfilePage implements OnInit {
   }
 
   logout() {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+    this.authService.logout().subscribe(() => {
+      this.router.navigate(['/login']);
+      this.snackBar.success('Logged out successfully');
+    });
   }
+
+  // logout() {
+  //   this.authService.logout();
+  //   this.router.navigate(['/login']);
+  // }
 }
