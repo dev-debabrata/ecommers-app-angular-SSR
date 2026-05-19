@@ -13,7 +13,6 @@ import { ProfilePage } from './pages/account/profile-page/profile-page';
 
 import { CustomerLayout } from './layouts/customer-layout/customer-layout';
 import { CartPage } from './pages/cart/cart-page/cart-page';
-import { OrderSuccessPage } from './pages/cart/order-success-page/order-success-page';
 
 export const routes: Routes = [
   {
@@ -93,6 +92,22 @@ export const routes: Routes = [
               ),
             data: { breadcrumb: 'Checkout' },
           },
+          {
+            path: 'payment',
+            loadComponent: () =>
+              import('./pages/cart/payment-page/payment-page').then((m) => m.PaymentPage),
+
+            data: { breadcrumb: 'Payment' },
+          },
+
+          {
+            path: 'order-success/:id',
+            loadComponent: () =>
+              import('./pages/cart/order-success-page/order-success-page').then(
+                (m) => m.OrderSuccessPage,
+              ),
+            data: { breadcrumb: 'Order Success' },
+          },
         ],
       },
 
@@ -102,13 +117,6 @@ export const routes: Routes = [
           import('./pages/wishlist-page/wishlist-page').then((m) => m.WishlistPage),
         canActivate: [authGuard],
         data: { breadcrumb: 'Wishlist' },
-      },
-
-      {
-        path: 'order-success/:id',
-        component: OrderSuccessPage,
-        canActivate: [authGuard],
-        data: { breadcrumb: 'Order Success' },
       },
     ],
   },
