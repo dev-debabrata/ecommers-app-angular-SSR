@@ -5,9 +5,21 @@
       <h3>SnapCart</h3>
       <p>Your one-stop online store for groceries, essentials & more.</p>
       <div class="social-icons">
-        <!-- <a href="#"><img src="assets/icons/facebook.svg" alt="Facebook" /></a>
-        <a href="#"><img src="assets/icons/twitter.svg" alt="Twitter" /></a>
-        <a href="#"><img src="assets/icons/instagram.svg" alt="Instagram" /></a> -->
+        <a href="#" aria-label="Facebook">
+          <fa-icon [icon]="faFacebook"></fa-icon>
+        </a>
+
+        <a href="#" aria-label="Instagram">
+          <fa-icon [icon]="faInstagram"></fa-icon>
+        </a>
+
+        <a href="#" aria-label="X">
+          <fa-icon [icon]="faXTwitter"></fa-icon>
+        </a>
+
+        <a href="#" aria-label="YouTube">
+          <fa-icon [icon]="faYoutube"></fa-icon>
+        </a>
       </div>
     </div>
 
@@ -29,24 +41,27 @@
     <div class="footer-categories">
       <h4>Categories</h4>
       <nav>
-        <a routerLink="/category/dairy">Dairy</a>
-        <a routerLink="/category/fruits">Fruits</a>
-        <a routerLink="/category/vegetables">Vegetables</a>
-        <a routerLink="/category/snacks">Snacks</a>
-        <a routerLink="/category/beverages">Beverages</a>
+        <a routerLink="/products" [queryParams]="{ main: 'electronics' }">Electronics</a>
+        <a routerLink="/products" [queryParams]="{ main: 'fashion' }">Fashion</a>
+        <a routerLink="/products" [queryParams]="{ main: 'footwear' }">Footwear</a>
+        <a routerLink="/products" [queryParams]="{ main: 'groceries' }">Groceries</a>
+        <a routerLink="/products" [queryParams]="{ main: 'baby-kids' }">Baby & Kids</a>
+        <a routerLink="/products" [queryParams]="{ main: 'pet-supplies' }">Pet Supplies</a>
+        <a routerLink="/products" [queryParams]="{ main: 'bags' }">Bags</a>
+        <a routerLink="/products" [queryParams]="{ main: 'jewellery' }">Jewellery </a>
       </nav>
     </div>
 
     <!-- Contact Info -->
     <div class="footer-contact">
       <h4>Contact Us</h4>
-      <p>Email: support@shopnest.com</p>
+      <p>Email: support@snapcart.com</p>
       <p>Phone: +91 9876543210</p>
       <p>Address: 123 Market Street, Mumbai, India</p>
     </div>
   </div>
 
   <div class="footer-bottom">
-    <p>&copy; {{ currentYear }} ShopNest. All rights reserved.</p>
+    <p>&copy; {{ currentYear }} SnapCart. All rights reserved.</p>
   </div>
 </footer>
