@@ -10,13 +10,13 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
 import { SnackbarService } from '../../../services/snackbar.service';
 
 @Component({
-  selector: 'app-product-list',
+  selector: 'app-product-list-table',
   standalone: true,
   imports: [RouterLink, CommonModule, MatIcon, TruncatePipe, MatPaginatorModule],
-  templateUrl: './product-list.html',
-  styleUrl: './product-list.css',
+  templateUrl: './product-list-table.html',
+  styleUrl: './product-list-table.css',
 })
-export class ProductList implements OnInit {
+export class ProductListTable implements OnInit {
   private productService = inject(ProductService);
   private destroyRef = inject(DestroyRef);
   private snackBar = inject(SnackbarService);

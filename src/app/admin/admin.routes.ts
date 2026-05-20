@@ -4,10 +4,10 @@ import { AdminLayout } from '../layouts/admin-layout/admin-layout';
 import { Dashboard } from './dashboard/dashboard';
 import { adminAuthGuard } from '../guards/admin-auth-guard';
 import { AdminLoginPage } from './auth/admin-login-page/admin-login-page';
-import { ProductList } from './products/product-list/product-list';
 
 import { UserList } from './users/user-list/user-list';
 import { OrderList } from './orders/order-list/order-list';
+import { ProductListTable } from './products/product-list-table/product-list-table';
 
 export const adminRoutes: Routes = [
   {
@@ -41,7 +41,7 @@ export const adminRoutes: Routes = [
       {
         path: 'products',
         children: [
-          { path: '', component: ProductList },
+          { path: '', component: ProductListTable },
           {
             path: 'add-product',
             loadComponent: () =>
