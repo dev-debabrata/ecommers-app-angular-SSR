@@ -40,7 +40,7 @@
     </div>
 
     <ul class="sidebar-item">
-      @for (menus of menu; track menus) {
+      @for (menus of menu; track menus.title) {
         <h2>{{ menus.title }}</h2>
 
         @for (item of menus.items; track item.name) {
@@ -75,7 +75,7 @@
         <h4>{{ selectedCategory.name }}</h4>
 
         <ul>
-          @for (sub of selectedCategory.subcategories; track sub) {
+          @for (sub of selectedCategory.subcategories; track sub.label) {
             <li (click)="goToSubCategory(sub)">
               {{ sub.label }}
             </li>
