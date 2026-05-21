@@ -4,7 +4,6 @@ import { AdminLayout } from '../layouts/admin-layout/admin-layout';
 import { Dashboard } from './dashboard/dashboard';
 import { adminAuthGuard } from '../guards/admin-auth-guard';
 import { AdminLoginPage } from './auth/admin-login-page/admin-login-page';
-
 import { UserList } from './users/user-list/user-list';
 import { OrderList } from './orders/order-list/order-list';
 import { ProductListTable } from './products/product-list-table/product-list-table';
