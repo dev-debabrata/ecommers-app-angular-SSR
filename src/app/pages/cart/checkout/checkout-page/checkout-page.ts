@@ -45,7 +45,12 @@ export class CheckoutPage implements OnInit {
         this.cartService.cart().length === 0 &&
         !this.orderPlaced()
       ) {
-        this.router.navigate(['/']);
+        const currentUrl = this.router.url;
+        // Don't redirect if already going to payment
+        if (!currentUrl.includes('payment')) {
+          this.router.navigate(['/']);
+        }
+        // this.router.navigate(['/']);
       }
     });
   }
@@ -95,21 +100,17 @@ export class CheckoutPage implements OnInit {
     const user = this.user();
 
     if (!address) {
-      this.snackbar.error('Please select a delivery address!');
+      this.snackbar.error('Please select an address!');
       return;
     }
 
     if (!user?.uid) {
-      this.snackbar.error('User not found. Please login again!');
+      this.snackbar.error('User not found!');
       return;
     }
 
-    this.loaderService.show();
-
-    const uid = user.uid as string;
-
-    const order: Omit<Order, 'id' | 'status'> = {
-      userId: uid,
+    const orderData = {
+      userId: user.uid,
       userEmail: user.email,
       address,
       shippingMethod: this.checkoutForm().shippingMethod,
@@ -127,23 +128,68 @@ export class CheckoutPage implements OnInit {
       createdAt: Date.now(),
     };
 
-    const orderSub = this.orderService.createOrder(uid, order as Order).subscribe({
-      next: (res: Order) => {
-        this.loaderService.hide();
-        this.orderPlaced.set(true);
-        this.cartService.clearCart();
-        this.snackbar.success('Order placed!');
-        this.router.navigate(['/order-success', res.orderId]);
-      },
-      error: (err) => {
-        this.loaderService.hide();
-        this.snackbar.error('Order failed! Please try again.');
-        console.error(err);
-      },
-    });
+    this.orderPlaced.set(true);
 
-    this.destroyRef.onDestroy(() => {
-      orderSub.unsubscribe();
+    // Navigate to payment page with order data in router state
+    this.router.navigate(['/cart/payment'], {
+      state: { orderData },
     });
   }
+
+  // submitOrder() {
+  //   const address = this.selectedAddress();
+  //   const user = this.user();
+
+  //   if (!address) {
+  //     this.snackbar.error('Please select a delivery address!');
+  //     return;
+  //   }
+
+  //   if (!user?.uid) {
+  //     this.snackbar.error('User not found. Please login again!');
+  //     return;
+  //   }
+
+  //   this.loaderService.show();
+
+  //   const uid = user.uid as string;
+
+  //   const order: Omit<Order, 'id' | 'status'> = {
+  //     userId: uid,
+  //     userEmail: user.email,
+  //     address,
+  //     shippingMethod: this.checkoutForm().shippingMethod,
+  //     items: this.cartService.cart().map((item) => ({
+  //       productId: item.id,
+  //       title: item.name,
+  //       image: item.image,
+  //       price: item.price,
+  //       quantity: item.quantity,
+  //       discount: item.discount || 0,
+  //     })),
+  //     subTotal: this.subTotal(),
+  //     gst: this.gst(),
+  //     total: this.totalPrice(),
+  //     createdAt: Date.now(),
+  //   };
+
+  //   const orderSub = this.orderService.createOrder(uid, order as Order).subscribe({
+  //     next: (res: Order) => {
+  //       this.loaderService.hide();
+  //       this.orderPlaced.set(true);
+  //       this.cartService.clearCart();
+  //       this.snackbar.success('Order placed!');
+  //       this.router.navigate(['/order-success', res.orderId]);
+  //     },
+  //     error: (err) => {
+  //       this.loaderService.hide();
+  //       this.snackbar.error('Order failed! Please try again.');
+  //       console.error(err);
+  //     },
+  //   });
+
+  //   this.destroyRef.onDestroy(() => {
+  //     orderSub.unsubscribe();
+  //   });
+  // }
 }
