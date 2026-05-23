@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, Injector, runInInjectionContext, signal } from '@angular/core';
 import {
   Firestore,
   collection,
@@ -9,18 +9,21 @@ import {
 } from '@angular/fire/firestore';
 import { Auth, authState } from '@angular/fire/auth';
 import { from } from 'rxjs';
-
 import { CartItem } from '../models/cart.model';
 
 @Injectable({ providedIn: 'root' })
 export class SaveLaterService {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
+  private injector = inject(Injector); // ← ADD THIS
 
   savedLater = signal<CartItem[]>([]);
 
   constructor() {
-    authState(this.auth).subscribe((user) => {
+    runInInjectionContext(this.injector, () =>
+      // ← WRAP authState
+      authState(this.auth),
+    ).subscribe((user) => {
       if (user) {
         this.loadSavedLater();
       } else {
@@ -34,7 +37,11 @@ export class SaveLaterService {
     if (!uid) return;
 
     const ref = collection(this.firestore, `users/${uid}/savedLater`);
-    collectionData(ref).subscribe((items: any) => {
+
+    runInInjectionContext(this.injector, () =>
+      // ← WRAP collectionData
+      collectionData(ref),
+    ).subscribe((items: any) => {
       const updated = items.map((item: any) => ({
         ...item,
         quantity: item.quantity ?? 1,
