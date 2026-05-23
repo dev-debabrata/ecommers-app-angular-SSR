@@ -44,6 +44,23 @@
         <h2>{{ menus.title }}</h2>
 
         @for (item of menus.items; track item.name) {
+          <li
+            class="menu-item"
+            [routerLink]="['/products']"
+            [queryParams]="{ main: item.category, category: 'all' }"
+          >
+            {{ item.name }}
+
+            @if (item.hasArrow) {
+              <mat-icon class="material-icons-outlined arrow">chevron_right</mat-icon>
+            }
+          </li>
+        }
+      }
+      <!-- @for (menus of menu; track menus.title) {
+        <h2>{{ menus.title }}</h2>
+
+        @for (item of menus.items; track item.name) {
           <li>
             {{ item.name }}
 
@@ -52,7 +69,7 @@
             }
           </li>
         }
-      }
+      } -->
     </ul>
   </div>
 

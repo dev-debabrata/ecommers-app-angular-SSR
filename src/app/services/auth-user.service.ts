@@ -87,11 +87,23 @@ export class AuthService {
     return this.firebaseUser$.pipe(
       switchMap((fbUser) => {
         if (!fbUser) return of(null);
-        const userRef = doc(this.firestore, 'users/' + fbUser.uid);
-        return runInInjectionContext(this.injector, () =>
-          docData(userRef, { idField: 'uid' }),
-        ) as Observable<User | null>;
+        return runInInjectionContext(this.injector, () => {
+          const userRef = doc(this.firestore, 'users/' + fbUser.uid);
+          return docData(userRef, { idField: 'uid' }) as Observable<User | null>;
+        });
       }),
     );
   }
+
+  // getFullUser(): Observable<User | null> {
+  //   return this.firebaseUser$.pipe(
+  //     switchMap((fbUser) => {
+  //       if (!fbUser) return of(null);
+  //       const userRef = doc(this.firestore, 'users/' + fbUser.uid);
+  //       return runInInjectionContext(this.injector, () =>
+  //         docData(userRef, { idField: 'uid' }),
+  //       ) as Observable<User | null>;
+  //     }),
+  //   );
+  // }
 }

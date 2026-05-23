@@ -46,13 +46,21 @@ export class OrderService {
   }
 
   getUserOrders(userId: string): Observable<Order[]> {
-    const ordersRef = collection(this.firestore, `users/${userId}/orders`);
-    const q = query(ordersRef, orderBy('createdAt', 'desc'));
-
-    return runInInjectionContext(this.injector, () =>
-      collectionData(q, { idField: 'id' }),
-    ) as Observable<Order[]>;
+    return runInInjectionContext(this.injector, () => {
+      const ordersRef = collection(this.firestore, `users/${userId}/orders`);
+      const q = query(ordersRef, orderBy('createdAt', 'desc'));
+      return collectionData(q, { idField: 'id' }) as Observable<Order[]>;
+    });
   }
+
+  // getUserOrders(userId: string): Observable<Order[]> {
+  //   const ordersRef = collection(this.firestore, `users/${userId}/orders`);
+  //   const q = query(ordersRef, orderBy('createdAt', 'desc'));
+
+  //   return runInInjectionContext(this.injector, () =>
+  //     collectionData(q, { idField: 'id' }),
+  //   ) as Observable<Order[]>;
+  // }
 
   getOrderById(userId: string, orderId: string): Observable<Order | null> {
     const orderRef = doc(this.firestore, `users/${userId}/orders/${orderId}`);

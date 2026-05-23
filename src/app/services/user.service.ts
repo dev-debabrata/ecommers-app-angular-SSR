@@ -19,18 +19,32 @@ export class UserService {
   private injector = inject(Injector);
 
   getUsers(): Observable<User[]> {
-    const usersRef = collection(this.firestore, 'users');
-    return runInInjectionContext(this.injector, () =>
-      collectionData(usersRef, { idField: 'id' }),
-    ) as Observable<User[]>;
+    return runInInjectionContext(this.injector, () => {
+      const usersRef = collection(this.firestore, 'users');
+      return collectionData(usersRef, { idField: 'id' }) as Observable<User[]>;
+    });
   }
 
   getUserById(uid: string): Observable<User> {
-    const userRef = doc(this.firestore, `users/${uid}`);
-    return runInInjectionContext(this.injector, () =>
-      docData(userRef, { idField: 'uid' }),
-    ) as Observable<User>;
+    return runInInjectionContext(this.injector, () => {
+      const userRef = doc(this.firestore, `users/${uid}`);
+      return docData(userRef, { idField: 'uid' }) as Observable<User>;
+    });
   }
+
+  // getUsers(): Observable<User[]> {
+  //   const usersRef = collection(this.firestore, 'users');
+  //   return runInInjectionContext(this.injector, () =>
+  //     collectionData(usersRef, { idField: 'id' }),
+  //   ) as Observable<User[]>;
+  // }
+
+  // getUserById(uid: string): Observable<User> {
+  //   const userRef = doc(this.firestore, `users/${uid}`);
+  //   return runInInjectionContext(this.injector, () =>
+  //     docData(userRef, { idField: 'uid' }),
+  //   ) as Observable<User>;
+  // }
 
   deleteUser(id: string): Observable<void> {
     const userDoc = doc(this.firestore, `users/${id}`);

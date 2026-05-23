@@ -51,22 +51,44 @@ export class CartService {
     const uid = this.auth.currentUser?.uid;
     if (!uid) return;
 
-    const cartRef = collection(this.firestore, `users/${uid}/cart`);
+    runInInjectionContext(this.injector, () => {
+      const cartRef = collection(this.firestore, `users/${uid}/cart`);
+      collectionData(cartRef).subscribe((items: any) => {
+        const updated = items
+          .map((item: any) => ({
+            ...item,
+            quantity: item.quantity ?? 1,
+            discount: item.discount ?? 0,
+            subCategory: item.subCategory ?? '',
+          }))
+          .sort((a: CartItem, b: CartItem) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
 
-    runInInjectionContext(this.injector, () => collectionData(cartRef)).subscribe((items: any) => {
-      const updated = items
-        .map((item: any) => ({
-          ...item,
-          quantity: item.quantity ?? 1,
-          discount: item.discount ?? 0,
-          subCategory: item.subCategory ?? '',
-        }))
-        .sort((a: CartItem, b: CartItem) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
-
-      this.cart.set(updated);
-      this.cartLoaded.set(true);
+        this.cart.set(updated);
+        this.cartLoaded.set(true);
+      });
     });
   }
+
+  // loadCart() {
+  //   const uid = this.auth.currentUser?.uid;
+  //   if (!uid) return;
+
+  //   const cartRef = collection(this.firestore, `users/${uid}/cart`);
+
+  //   runInInjectionContext(this.injector, () => collectionData(cartRef)).subscribe((items: any) => {
+  //     const updated = items
+  //       .map((item: any) => ({
+  //         ...item,
+  //         quantity: item.quantity ?? 1,
+  //         discount: item.discount ?? 0,
+  //         subCategory: item.subCategory ?? '',
+  //       }))
+  //       .sort((a: CartItem, b: CartItem) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
+
+  //     this.cart.set(updated);
+  //     this.cartLoaded.set(true);
+  //   });
+  // }
 
   getDiscountPrice(item: CartItem): number {
     if (!item.discount) return item.price;

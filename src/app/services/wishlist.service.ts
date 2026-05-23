@@ -49,15 +49,32 @@ export class WishlistService {
       this.wishlistSub.unsubscribe();
     }
 
-    const wishlistRef = collection(this.firestore, `users/${uid}/wishlist`);
-
-    this.wishlistSub = runInInjectionContext(this.injector, () =>
-      collectionData(wishlistRef, { idField: 'id' }),
-    ).subscribe((items: any[]) => {
+    this.wishlistSub = runInInjectionContext(this.injector, () => {
+      const wishlistRef = collection(this.firestore, `users/${uid}/wishlist`);
+      return collectionData(wishlistRef, { idField: 'id' });
+    }).subscribe((items: any[]) => {
       const sorted = (items || []).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
       this.wishlist.set(sorted);
     });
   }
+
+  // loadWishlist() {
+  //   const uid = this.auth.currentUser?.uid;
+  //   if (!uid) return;
+
+  //   if (this.wishlistSub) {
+  //     this.wishlistSub.unsubscribe();
+  //   }
+
+  //   const wishlistRef = collection(this.firestore, `users/${uid}/wishlist`);
+
+  //   this.wishlistSub = runInInjectionContext(this.injector, () =>
+  //     collectionData(wishlistRef, { idField: 'id' }),
+  //   ).subscribe((items: any[]) => {
+  //     const sorted = (items || []).sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  //     this.wishlist.set(sorted);
+  //   });
+  // }
 
   addToWishlist(product: Product): Observable<void> {
     const uid = this.auth.currentUser?.uid;

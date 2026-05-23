@@ -29,19 +29,64 @@ export class ProductService {
 
   getProducts(): Observable<Product[]> {
     if (!isPlatformBrowser(this.platformId)) return EMPTY;
-    const ref = collection(this.firestore, 'products');
 
-    return runInInjectionContext(this.injector, () =>
-      collectionData(ref, { idField: 'id' }),
-    ) as Observable<Product[]>;
+    return runInInjectionContext(this.injector, () => {
+      const ref = collection(this.firestore, 'products');
+      return collectionData(ref, { idField: 'id' }) as Observable<Product[]>;
+    });
   }
 
   getProductById(id: string): Observable<Product | null> {
-    const productRef = doc(this.firestore, 'products/' + id);
-    return runInInjectionContext(this.injector, () =>
-      docData(productRef, { idField: 'id' }),
-    ) as Observable<Product | null>;
+    return runInInjectionContext(this.injector, () => {
+      const productRef = doc(this.firestore, 'products/' + id);
+      return docData(productRef, { idField: 'id' }) as Observable<Product | null>;
+    });
   }
+
+  addProduct(product: Product): Observable<any> {
+    if (!isPlatformBrowser(this.platformId)) return EMPTY;
+    return runInInjectionContext(this.injector, () => {
+      const ref = collection(this.firestore, 'products');
+      return from(addDoc(ref, { ...product, createdAt: Date.now() }));
+    });
+  }
+
+  deleteProduct(id: string): Observable<void> {
+    if (!isPlatformBrowser(this.platformId)) return EMPTY;
+    return runInInjectionContext(this.injector, () =>
+      from(deleteDoc(doc(this.firestore, 'products/' + id))),
+    );
+  }
+
+  updateProduct(id: string, data: Partial<Product>): Observable<void> {
+    if (!isPlatformBrowser(this.platformId)) return EMPTY;
+    return runInInjectionContext(this.injector, () =>
+      from(updateDoc(doc(this.firestore, 'products/' + id), data)),
+    );
+  }
+
+  // getProducts(): Observable<Product[]> {
+  //   if (!isPlatformBrowser(this.platformId)) return EMPTY;
+  //   const ref = collection(this.firestore, 'products');
+
+  //   return runInInjectionContext(this.injector, () =>
+  //     collectionData(ref, { idField: 'id' }),
+  //   ) as Observable<Product[]>;
+  // }
+
+  // getProductById(id: string): Observable<Product | null> {
+  //   const productRef = doc(this.firestore, 'products/' + id);
+  //   return runInInjectionContext(this.injector, () =>
+  //     docData(productRef, { idField: 'id' }),
+  //   ) as Observable<Product | null>;
+  // }
+
+  // getProductById(id: string): Observable<Product | null> {
+  //   const productRef = doc(this.firestore, 'products/' + id);
+  //   return runInInjectionContext(this.injector, () =>
+  //     docData(productRef, { idField: 'id' }),
+  //   ) as Observable<Product | null>;
+  // }
 
   // private firestore = inject(Firestore);
   // private platformId = inject(PLATFORM_ID);
@@ -73,21 +118,21 @@ export class ProductService {
   //   }) as Observable<Product | null>;
   // }
 
-  addProduct(product: Product): Observable<any> {
-    if (!isPlatformBrowser(this.platformId)) return EMPTY;
-    const ref = collection(this.firestore, 'products');
-    return from(addDoc(ref, { ...product, createdAt: Date.now() }));
-  }
+  // addProduct(product: Product): Observable<any> {
+  //   if (!isPlatformBrowser(this.platformId)) return EMPTY;
+  //   const ref = collection(this.firestore, 'products');
+  //   return from(addDoc(ref, { ...product, createdAt: Date.now() }));
+  // }
 
-  deleteProduct(id: string): Observable<void> {
-    if (!isPlatformBrowser(this.platformId)) return EMPTY;
-    return from(deleteDoc(doc(this.firestore, 'products/' + id)));
-  }
+  // deleteProduct(id: string): Observable<void> {
+  //   if (!isPlatformBrowser(this.platformId)) return EMPTY;
+  //   return from(deleteDoc(doc(this.firestore, 'products/' + id)));
+  // }
 
-  updateProduct(id: string, data: Partial<Product>): Observable<void> {
-    if (!isPlatformBrowser(this.platformId)) return EMPTY;
-    return from(updateDoc(doc(this.firestore, 'products/' + id), data));
-  }
+  // updateProduct(id: string, data: Partial<Product>): Observable<void> {
+  //   if (!isPlatformBrowser(this.platformId)) return EMPTY;
+  //   return from(updateDoc(doc(this.firestore, 'products/' + id), data));
+  // }
 
   // addProduct(product: Product): Observable<any> {
   //   return from(

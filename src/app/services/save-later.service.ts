@@ -33,9 +33,10 @@ export class SaveLaterService {
     const uid = this.auth.currentUser?.uid;
     if (!uid) return;
 
-    const ref = collection(this.firestore, `users/${uid}/savedLater`);
-
-    runInInjectionContext(this.injector, () => collectionData(ref)).subscribe((items: any) => {
+    runInInjectionContext(this.injector, () => {
+      const ref = collection(this.firestore, `users/${uid}/savedLater`);
+      return collectionData(ref);
+    }).subscribe((items: any) => {
       const updated = items.map((item: any) => ({
         ...item,
         quantity: item.quantity ?? 1,
@@ -45,6 +46,23 @@ export class SaveLaterService {
       this.savedLater.set(updated);
     });
   }
+
+  // loadSavedLater() {
+  //   const uid = this.auth.currentUser?.uid;
+  //   if (!uid) return;
+
+  //   const ref = collection(this.firestore, `users/${uid}/savedLater`);
+
+  //   runInInjectionContext(this.injector, () => collectionData(ref)).subscribe((items: any) => {
+  //     const updated = items.map((item: any) => ({
+  //       ...item,
+  //       quantity: item.quantity ?? 1,
+  //       discount: item.discount ?? 0,
+  //       subCategory: item.subCategory ?? '',
+  //     }));
+  //     this.savedLater.set(updated);
+  //   });
+  // }
 
   saveForLater(item: CartItem) {
     const uid = this.auth.currentUser?.uid;
