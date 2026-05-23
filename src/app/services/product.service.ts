@@ -1,5 +1,5 @@
-import { inject, Injectable, PLATFORM_ID } from '@angular/core';
-
+import { inject, Injectable, Injector, PLATFORM_ID, runInInjectionContext } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import {
   Firestore,
   collection,
@@ -11,8 +11,8 @@ import {
   docData,
 } from '@angular/fire/firestore';
 import { EMPTY, from, map, Observable } from 'rxjs';
+
 import { Product } from '../models/product.model';
-import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -20,33 +20,58 @@ import { isPlatformBrowser } from '@angular/common';
 export class ProductService {
   private firestore = inject(Firestore);
   private platformId = inject(PLATFORM_ID);
-  // private productsRef = collection(this.firestore, 'products');
+  private injector = inject(Injector);
 
   getDiscountPrice(product: Product): number {
     if (!product.discount) return product.price;
-
     return product.price - (product.price * product.discount) / 100;
   }
 
   getProducts(): Observable<Product[]> {
     if (!isPlatformBrowser(this.platformId)) return EMPTY;
     const ref = collection(this.firestore, 'products');
-    return collectionData(ref, { idField: 'id' }) as Observable<Product[]>;
+    // ↓ WRAP collectionData in runInInjectionContext
+    return runInInjectionContext(this.injector, () =>
+      collectionData(ref, { idField: 'id' }),
+    ) as Observable<Product[]>;
   }
-
-  // getProducts(): Observable<Product[]> {
-  //   return collectionData(this.productsRef, {
-  //     idField: 'id',
-  //   }) as Observable<Product[]>;
-  // }
 
   getProductById(id: string): Observable<Product | null> {
     const productRef = doc(this.firestore, 'products/' + id);
-
-    return docData(productRef, {
-      idField: 'id',
-    }) as Observable<Product | null>;
+    return runInInjectionContext(this.injector, () =>
+      docData(productRef, { idField: 'id' }),
+    ) as Observable<Product | null>;
   }
+
+  // private firestore = inject(Firestore);
+  // private platformId = inject(PLATFORM_ID);
+  // // private productsRef = collection(this.firestore, 'products');
+
+  // getDiscountPrice(product: Product): number {
+  //   if (!product.discount) return product.price;
+
+  //   return product.price - (product.price * product.discount) / 100;
+  // }
+
+  // getProducts(): Observable<Product[]> {
+  //   if (!isPlatformBrowser(this.platformId)) return EMPTY;
+  //   const ref = collection(this.firestore, 'products');
+  //   return collectionData(ref, { idField: 'id' }) as Observable<Product[]>;
+  // }
+
+  // // getProducts(): Observable<Product[]> {
+  // //   return collectionData(this.productsRef, {
+  // //     idField: 'id',
+  // //   }) as Observable<Product[]>;
+  // // }
+
+  // getProductById(id: string): Observable<Product | null> {
+  //   const productRef = doc(this.firestore, 'products/' + id);
+
+  //   return docData(productRef, {
+  //     idField: 'id',
+  //   }) as Observable<Product | null>;
+  // }
 
   addProduct(product: Product): Observable<any> {
     if (!isPlatformBrowser(this.platformId)) return EMPTY;
