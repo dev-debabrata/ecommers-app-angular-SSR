@@ -50,7 +50,6 @@ export class OrderService {
     const q = query(ordersRef, orderBy('createdAt', 'desc'));
 
     return runInInjectionContext(this.injector, () =>
-      // ← WRAP collectionData
       collectionData(q, { idField: 'id' }),
     ) as Observable<Order[]>;
   }
@@ -82,7 +81,6 @@ export class OrderService {
     const q = query(ordersRef, orderBy('createdAt', 'desc'));
 
     return runInInjectionContext(this.injector, () =>
-      // ← WRAP collectionData
       collectionData(q, { idField: 'id' }),
     ) as Observable<any[]>;
   }

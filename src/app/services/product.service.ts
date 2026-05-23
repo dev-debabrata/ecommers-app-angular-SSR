@@ -30,7 +30,7 @@ export class ProductService {
   getProducts(): Observable<Product[]> {
     if (!isPlatformBrowser(this.platformId)) return EMPTY;
     const ref = collection(this.firestore, 'products');
-    // ↓ WRAP collectionData in runInInjectionContext
+
     return runInInjectionContext(this.injector, () =>
       collectionData(ref, { idField: 'id' }),
     ) as Observable<Product[]>;

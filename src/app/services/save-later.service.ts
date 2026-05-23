@@ -15,15 +15,12 @@ import { CartItem } from '../models/cart.model';
 export class SaveLaterService {
   private firestore = inject(Firestore);
   private auth = inject(Auth);
-  private injector = inject(Injector); // ← ADD THIS
+  private injector = inject(Injector);
 
   savedLater = signal<CartItem[]>([]);
 
   constructor() {
-    runInInjectionContext(this.injector, () =>
-      // ← WRAP authState
-      authState(this.auth),
-    ).subscribe((user) => {
+    runInInjectionContext(this.injector, () => authState(this.auth)).subscribe((user) => {
       if (user) {
         this.loadSavedLater();
       } else {
@@ -38,10 +35,7 @@ export class SaveLaterService {
 
     const ref = collection(this.firestore, `users/${uid}/savedLater`);
 
-    runInInjectionContext(this.injector, () =>
-      // ← WRAP collectionData
-      collectionData(ref),
-    ).subscribe((items: any) => {
+    runInInjectionContext(this.injector, () => collectionData(ref)).subscribe((items: any) => {
       const updated = items.map((item: any) => ({
         ...item,
         quantity: item.quantity ?? 1,
