@@ -44,6 +44,15 @@
         <h2>{{ menus.title }}</h2>
 
         @for (item of menus.items; track item.name) {
+          <li class="menu-item" (click)="onMenuItemClick(item)">
+            {{ item.name }}
+            @if (item.hasArrow) {
+              <mat-icon class="material-icons-outlined arrow">chevron_right</mat-icon>
+            }
+          </li>
+        }
+
+        <!-- @for (item of menus.items; track item.name) {
           <li
             class="menu-item"
             [routerLink]="['/products']"
@@ -55,7 +64,7 @@
               <mat-icon class="material-icons-outlined arrow">chevron_right</mat-icon>
             }
           </li>
-        }
+        } -->
       }
       <!-- @for (menus of menu; track menus.title) {
         <h2>{{ menus.title }}</h2>

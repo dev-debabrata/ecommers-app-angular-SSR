@@ -8,7 +8,7 @@ import { AuthService } from '../../services/auth-user.service';
 import { User } from '../../models/user.model';
 import { Category } from '../../models/category.model';
 import { CATEGORIES } from '../../data/category.data';
-import { MENU } from '../../data/menu.data';
+import { MENU, MenuItem } from '../../data/menu.data';
 import { SnackbarService } from '../../services/snackbar.service';
 
 @Component({
@@ -132,5 +132,16 @@ export class Navbar {
     });
 
     this.closeDropdown();
+  }
+
+  onMenuItemClick(item: MenuItem) {
+    if (item.path) {
+      this.router.navigate([item.path]);
+    } else if (item.category) {
+      this.router.navigate(['/products'], {
+        queryParams: { main: item.category, category: 'all' },
+      });
+    }
+    this.closeSidebar();
   }
 }
