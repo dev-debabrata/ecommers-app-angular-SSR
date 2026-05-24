@@ -2,6 +2,7 @@ export interface MenuItem {
   name: string;
   category?: string;
   hasArrow?: boolean;
+  path?: string;
 }
 
 export interface MenuSection {
