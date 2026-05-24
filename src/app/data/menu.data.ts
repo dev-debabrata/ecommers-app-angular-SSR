@@ -11,21 +11,41 @@ export interface MenuSection {
 }
 
 export const MENU: MenuSection[] = [
+  // {
+  //   title: 'Trending',
+  //   items: [{ name: 'Best Sellers' }, { name: 'New Releases' }, { name: 'Movers and Shakers' }],
+  // },
+  // {
+  //   title: 'Digital Content And Devices',
+  //   items: [
+  //     { name: 'Echo & Alexa', hasArrow: true },
+  //     { name: 'Fire TV', hasArrow: true },
+  //     { name: 'Kindle E-Readers & eBooks', hasArrow: true },
+  //     { name: 'Audible Audiobooks', hasArrow: true },
+  //     { name: 'Amazon Prime Video', hasArrow: true },
+  //     { name: 'Amazon Prime Music', hasArrow: true },
+  //   ],
+  // },
+
   {
-    title: 'Trending',
-    items: [{ name: 'Best Sellers' }, { name: 'New Releases' }, { name: 'Movers and Shakers' }],
-  },
-  {
-    title: 'Digital Content And Devices',
+    title: 'Deals & Offers',
     items: [
-      { name: 'Echo & Alexa', hasArrow: true },
-      { name: 'Fire TV', hasArrow: true },
-      { name: 'Kindle E-Readers & eBooks', hasArrow: true },
-      { name: 'Audible Audiobooks', hasArrow: true },
-      { name: 'Amazon Prime Video', hasArrow: true },
-      { name: 'Amazon Prime Music', hasArrow: true },
+      { name: "Today's Deals", path: '/deals/today' },
+      { name: 'Best Sellers', path: '/deals/best-sellers' },
+      { name: 'New Arrivals', path: '/deals/new-arrivals' },
+      { name: 'Trending Products', path: '/deals/trending' },
     ],
   },
+  {
+    title: 'Digital Services',
+    items: [
+      { name: 'Prime Video', path: '/digital/prime-video', hasArrow: true },
+      { name: 'Music Streaming', path: '/digital/music', hasArrow: true },
+      { name: 'eBooks & Kindle', path: '/digital/ebooks', hasArrow: true },
+      { name: 'Audiobooks', path: '/digital/audiobooks', hasArrow: true },
+    ],
+  },
+
   {
     title: 'Shop By Category',
     items: [
