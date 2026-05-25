@@ -36,15 +36,15 @@ export const MENU: MenuSection[] = [
       { name: 'Trending Products', path: '/deals/trending' },
     ],
   },
-  {
-    title: 'Digital Services',
-    items: [
-      { name: 'Prime Video', path: '/digital/prime-video', hasArrow: true },
-      { name: 'Music Streaming', path: '/digital/music', hasArrow: true },
-      { name: 'eBooks & Kindle', path: '/digital/ebooks', hasArrow: true },
-      { name: 'Audiobooks', path: '/digital/audiobooks', hasArrow: true },
-    ],
-  },
+  // {
+  //   title: 'Digital Services',
+  //   items: [
+  //     { name: 'Prime Video', path: '/digital/prime-video', hasArrow: true },
+  //     { name: 'Music Streaming', path: '/digital/music', hasArrow: true },
+  //     { name: 'eBooks & Kindle', path: '/digital/ebooks', hasArrow: true },
+  //     { name: 'Audiobooks', path: '/digital/audiobooks', hasArrow: true },
+  //   ],
+  // },
 
   {
     title: 'Shop By Category',
