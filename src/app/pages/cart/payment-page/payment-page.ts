@@ -7,12 +7,9 @@ import { OrderService } from '../../../services/order.service';
 import { LoaderService } from '../../../services/loader.service';
 import { SnackbarService } from '../../../services/snackbar.service';
 import { CartService } from '../../../services/cart.service';
+import { RazorpayService } from '../../../services/razorpay.service';
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
-import { environment } from '../../../../environments/environment';
-
-declare var Razorpay: any;
-
-type PaymentMethod = 'cod' | 'upi' | 'card' | 'emi' | 'netbanking';
+import { PaymentMethod } from '../../../models/payment.model';
 
 @Component({
   selector: 'app-payment-page',
@@ -27,6 +24,7 @@ export class PaymentPage {
   private loaderService = inject(LoaderService);
   private snackbar = inject(SnackbarService);
   private cartService = inject(CartService);
+  private razorpayService = inject(RazorpayService);
   private destroyRef = inject(DestroyRef);
 
   selectedMethod = signal<PaymentMethod>('cod');
@@ -40,7 +38,7 @@ export class PaymentPage {
   };
 
   constructor() {
-    const nav = this.router.getCurrentNavigation();
+    const nav = this.router.currentNavigation();
     const state = nav?.extras?.state as { orderData: any };
 
     if (state?.orderData) {
@@ -67,67 +65,22 @@ export class PaymentPage {
       return;
     }
 
-    this.openRazorpay(data);
-  }
+    this.razorpayService.openPayment(
+      data,
+      this.selectedMethod(),
 
-  private openRazorpay(data: any) {
-    const amountInPaise = Math.round(data.total * 100);
-
-    const options = {
-      key: environment.razorpayKey,
-
-      amount: amountInPaise,
-      currency: 'INR',
-      name: 'Your Store Name',
-      description: 'Order Payment',
-      image: 'assets/logo.png',
-      prefill: {
-        name: data.address?.fullName || '',
-        email: data.userEmail || '',
-        contact: data.address?.phone || '',
-      },
-      notes: {
-        userId: data.userId,
-      },
-      theme: {
-        color: '#ffd814',
-      },
-      method: this.getRazorpayMethod(),
-
-      handler: (response: any) => {
-        console.log('Razorpay success:', response);
-        this.onPaymentSuccess(response.razorpay_payment_id);
+      (paymentId: string) => {
+        this.createOrder(this.selectedMethod(), 'paid', paymentId);
       },
 
-      modal: {
-        ondismiss: () => {
-          this.snackbar.error('Payment cancelled.');
-        },
+      () => {
+        this.snackbar.error('Payment cancelled.');
       },
-    };
 
-    const rzp = new Razorpay(options);
-
-    rzp.on('payment.failed', (response: any) => {
-      this.snackbar.error('Payment failed: ' + response.error.description);
-      console.error('Razorpay error:', response.error);
-    });
-
-    rzp.open();
-  }
-
-  private getRazorpayMethod(): string | undefined {
-    const map: Record<string, string> = {
-      upi: 'upi',
-      card: 'card',
-      emi: 'emi',
-      netbanking: 'netbanking',
-    };
-    return map[this.selectedMethod()] ?? undefined;
-  }
-
-  private onPaymentSuccess(razorpayPaymentId: string) {
-    this.createOrder(this.selectedMethod(), 'paid', razorpayPaymentId);
+      (error: any) => {
+        this.snackbar.error('Payment failed: ' + error.description);
+      },
+    );
   }
 
   private createOrder(paymentMethod: string, status: string, razorpayPaymentId: string) {
