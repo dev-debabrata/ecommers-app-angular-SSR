@@ -2,11 +2,12 @@ import { Component, inject, PLATFORM_ID, DestroyRef, signal, NgZone } from '@ang
 import { isPlatformBrowser } from '@angular/common';
 import { interval } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './hero.html',
   styleUrl: './hero.css',
 })
