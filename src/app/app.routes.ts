@@ -13,6 +13,7 @@ import { ProfilePage } from './pages/account/profile-page/profile-page';
 
 import { CustomerLayout } from './layouts/customer-layout/customer-layout';
 import { CartPage } from './pages/cart/cart-page/cart-page';
+import { ShippingInfo } from './pages/shipping-info/shipping-info';
 
 export const routes: Routes = [
   {
@@ -41,6 +42,12 @@ export const routes: Routes = [
         path: 'contact',
         component: ContactPage,
         data: { breadcrumb: 'Contact' },
+      },
+
+      {
+        path: 'shipping-info',
+        component: ShippingInfo,
+        data: { breadcrumb: 'Shipping-Info' },
       },
 
       {

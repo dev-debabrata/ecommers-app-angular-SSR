@@ -1,6 +1,6 @@
 <nav class="navbar">
   <div class="category-btn" (click)="toggleSidebar()">
-    <mat-icon>menu</mat-icon> SHOP BY CATEGORIES
+    <mat-icon class="material-icons-outlined">menu</mat-icon> SHOP BY CATEGORIES
   </div>
 
   @if (isSidebarOpen) {
@@ -15,7 +15,7 @@
           [routerLink]="isLoggedIn ? '/' : '/login'"
           routerLinkActive="active"
           class="btn secondary"
-          ><mat-icon>person</mat-icon>Hello, sign In</a
+          ><mat-icon class="material-icons-outlined">person</mat-icon>Hello, sign In</a
         >
       } @else {
         <div class="avatar-container">
@@ -35,7 +35,7 @@
       }
 
       <button (click)="closeSidebar()">
-        <mat-icon>closeSidebar</mat-icon>
+        <mat-icon class="material-icons-outlined">closeSidebar</mat-icon>
       </button>
     </div>
 
@@ -66,19 +66,6 @@
           </li>
         } -->
       }
-      <!-- @for (menus of menu; track menus.title) {
-        <h2>{{ menus.title }}</h2>
-
-        @for (item of menus.items; track item.name) {
-          <li>
-            {{ item.name }}
-
-            @if (item.hasArrow) {
-              <mat-icon class="arrow">chevron_right</mat-icon>
-            }
-          </li>
-        }
-      } -->
     </ul>
   </div>
 
@@ -134,5 +121,9 @@
     }
   </div> -->
 
-  <div class="delivery">🚀 Free International Delivery</div>
+  <div class="delivery">
+    <a routerLink="/shipping-info">🚀 Shipping Across India & Worldwide</a>
+  </div>
+
+  <!-- <div class="delivery">🚀 Free International Delivery</div> -->
 </nav>
