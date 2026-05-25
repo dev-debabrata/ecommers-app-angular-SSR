@@ -79,6 +79,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1100;
+  /* padding: 80px 16px 24px; */
+
+  box-sizing: border-box;
+}
+
+.popup-box {
+  margin-top: 0;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 500px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 104px);
+}
+
+/* .popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 999;
 }
 
@@ -89,7 +114,7 @@
   width: 500px;
   display: flex;
   flex-direction: column;
-}
+} */
 
 .popup-header {
   display: flex;
