@@ -83,6 +83,13 @@ export const routes: Routes = [
       },
 
       {
+        path: 'deals/best-sellers',
+        data: { breadcrumb: 'Best Sellers' },
+        loadComponent: () =>
+          import('./pages/sidebar/best-sellers/best-sellers').then((m) => m.BestSellers),
+      },
+
+      {
         path: 'deals/trending',
         data: { breadcrumb: 'Trending Products' },
         loadComponent: () =>

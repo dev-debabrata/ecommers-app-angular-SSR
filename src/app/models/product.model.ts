@@ -11,6 +11,8 @@ export interface Product {
   image: string;
 
   description: string;
+  sales?: number;
+  views?: number;
   discount?: number;
   discountPrice?: number;
   rating?: number;

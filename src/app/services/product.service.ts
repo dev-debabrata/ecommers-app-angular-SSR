@@ -177,9 +177,36 @@ export class ProductService {
 
   getTrendingProducts(): Observable<Product[]> {
     return this.getProducts().pipe(
-      map((products) => products.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0))),
+      map((products) => {
+        const bestSellerIds = new Set(
+          [...products]
+            .map((p) => ({
+              product: p,
+              score: (p.sales || 0) * 3 + (p.rating || 0) * 2 + (p.discount || 0) * 0.5,
+            }))
+            .sort((a, b) => b.score - a.score)
+            .slice(0, 20)
+            .map((entry) => entry.product.id),
+        );
+
+        return [...products]
+          .filter((p) => !bestSellerIds.has(p.id))
+          .map((p) => ({
+            product: p,
+            score: (p.views || 0) * 0.5 + (p.rating || 0) * 1.5 + (p.discount || 0) * 0.3,
+          }))
+          .sort((a, b) => b.score - a.score)
+          .map((entry) => entry.product);
+        // .slice(0, 20);
+      }),
     );
   }
+
+  // getTrendingProducts(): Observable<Product[]> {
+  //   return this.getProducts().pipe(
+  //     map((products) => products.sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0))),
+  //   );
+  // }
 
   getTodayDeals(): Observable<Product[]> {
     return this.getProducts().pipe(
@@ -197,6 +224,21 @@ export class ProductService {
         products
           .filter((p) => (p.discount || 0) >= 50)
           .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)),
+      ),
+    );
+  }
+
+  getBestSellers(): Observable<Product[]> {
+    return this.getProducts().pipe(
+      map((products) =>
+        [...products]
+          .map((p) => ({
+            product: p,
+            score: (p.sales || 0) * 3 + (p.rating || 0) * 2 + (p.discount || 0) * 0.5,
+          }))
+          .sort((a, b) => b.score - a.score)
+          .map((entry) => entry.product)
+          .slice(0, 20),
       ),
     );
   }
