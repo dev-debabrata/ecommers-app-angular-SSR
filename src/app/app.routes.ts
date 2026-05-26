@@ -97,6 +97,13 @@ export const routes: Routes = [
       },
 
       {
+        path: 'deals/new-arrivals',
+        data: { breadcrumb: 'New Arrivals' },
+        loadComponent: () =>
+          import('./pages/sidebar/new-arrivals/new-arrivals').then((m) => m.NewArrivals),
+      },
+
+      {
         path: 'deals/trending',
         data: { breadcrumb: 'Trending Products' },
         loadComponent: () =>
