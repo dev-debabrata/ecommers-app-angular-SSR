@@ -69,6 +69,7 @@ button:hover {
   display: flex;
   flex-direction: column;
   max-height: calc(100vh - 104px);
+  overflow-y: auto;
 }
 
 /* .popup {
