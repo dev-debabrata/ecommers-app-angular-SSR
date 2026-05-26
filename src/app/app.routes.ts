@@ -83,6 +83,13 @@ export const routes: Routes = [
       },
 
       {
+        path: 'deals/today',
+        data: { breadcrumb: 'Today Deals' },
+        loadComponent: () =>
+          import('./pages/sidebar/today-deals/today-deals').then((m) => m.TodayDeals),
+      },
+
+      {
         path: 'deals/best-sellers',
         data: { breadcrumb: 'Best Sellers' },
         loadComponent: () =>
