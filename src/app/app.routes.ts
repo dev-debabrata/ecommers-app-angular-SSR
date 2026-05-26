@@ -83,6 +83,15 @@ export const routes: Routes = [
       },
 
       {
+        path: 'deals/trending',
+        data: { breadcrumb: 'Trending Products' },
+        loadComponent: () =>
+          import('./pages/sidebar/trending-products/trending-products').then(
+            (m) => m.TrendingProducts,
+          ),
+      },
+
+      {
         path: 'cart',
         canActivate: [authGuard],
         data: { breadcrumb: 'Cart' },
