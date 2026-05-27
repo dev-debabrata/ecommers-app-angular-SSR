@@ -1,3 +1,6 @@
 {
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/ecommerce-app-angular-ssr/browser",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
