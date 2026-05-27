@@ -69,7 +69,37 @@ export class Breadcrumb implements OnInit, OnDestroy {
             url: `/products/${base.productId}`,
           });
         } else {
-          const { main, sub } = base;
+          const { main, sub, latest, discount } = base;
+
+          // if (this.router.url.startsWith('/products')) {
+          //   // Only add if not already present
+          //   if (!this.breadcrumbs.some((b) => b.label === 'Products')) {
+          //     this.breadcrumbs.push({ label: 'Products', url: '/products' });
+          //   }
+          // }
+
+          if (this.router.url === '/products') {
+            this.breadcrumbs.push({ label: 'All Products', url: '/products' });
+            return;
+          }
+
+          if (discount) {
+            this.breadcrumbs.push({
+              label: 'Discount',
+              url: '/products',
+              queryParams: { latest: 'true' },
+            });
+            return;
+          }
+
+          if (latest) {
+            this.breadcrumbs.push({
+              label: 'Trending',
+              url: '/products',
+              queryParams: { latest: 'true' },
+            });
+            return;
+          }
 
           if (main && main !== 'all') {
             this.breadcrumbs.push({
@@ -92,7 +122,14 @@ export class Breadcrumb implements OnInit, OnDestroy {
 
   private buildBase() {
     if (this.router.url === '/' || this.router.url === '') {
-      return { staticCrumbs: [], productId: null, main: null, sub: null };
+      return {
+        staticCrumbs: [],
+        productId: null,
+        main: null,
+        sub: null,
+        latest: false,
+        discount: null,
+      };
     }
 
     const staticCrumbs: { label: string; url: string; queryParams?: Record<string, string> }[] = [
@@ -113,6 +150,7 @@ export class Breadcrumb implements OnInit, OnDestroy {
       if (
         staticLabel &&
         staticLabel !== 'Home' &&
+        staticLabel !== 'Products' &&
         !staticCrumbs.some((b) => b.label === staticLabel)
       ) {
         staticCrumbs.push({ label: staticLabel, url });
@@ -126,8 +164,10 @@ export class Breadcrumb implements OnInit, OnDestroy {
     const queryParams = deepest.queryParams;
     const main = queryParams['main']?.toLowerCase().trim() ?? null;
     const sub = queryParams['category']?.toLowerCase().trim() ?? null;
+    const latest = queryParams['latest'] === 'true';
+    const discount = queryParams['discount'] ?? null;
 
-    return { staticCrumbs, productId, main, sub };
+    return { staticCrumbs, productId, main, sub, latest, discount };
   }
 
   private toLabel(value: string): string {
