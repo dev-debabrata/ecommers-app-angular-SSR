@@ -24,10 +24,17 @@
 }
 
 .admin-actions button {
+  font-size: 14px;
+  font-weight: 600;
   margin-left: 10px;
   background: red;
   border: none;
   color: white;
   padding: 5px 10px;
+  border-radius: 4px;
   cursor: pointer;
+}
+
+.admin-actions button:hover {
+  background: #e03131;
 }
