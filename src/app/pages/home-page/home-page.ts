@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { afterNextRender, Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { Hero } from '../../components/hero/hero';
@@ -17,6 +17,7 @@ import { Beauty } from '../../components/categories/beauty/beauty';
 import { HomeLiving } from '../../components/categories/home-living/home-living';
 import { Jewellery } from '../../components/categories/jewellery/jewellery';
 import { BabyKids } from '../../components/categories/baby-kids/baby-kids';
+import { Loader } from '../../components/loader/loader';
 
 @Component({
   selector: 'app-home-page',
@@ -38,8 +39,17 @@ import { BabyKids } from '../../components/categories/baby-kids/baby-kids';
     HomeLiving,
     Jewellery,
     BabyKids,
+    Loader,
   ],
   templateUrl: './home-page.html',
   styleUrl: './home-page.css',
 })
-export class HomePage {}
+export class HomePage {
+  isLoading = signal(true);
+
+  constructor() {
+    afterNextRender(() => {
+      this.isLoading.set(false);
+    });
+  }
+}
