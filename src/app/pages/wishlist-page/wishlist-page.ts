@@ -25,8 +25,7 @@ export class WishlistPage {
   private cartService = inject(CartService);
   private wishlistService = inject(WishlistService);
   private snackBar = inject(SnackbarService);
-
-  private loaderService = inject(LoaderService); // ← inject service
+  private loaderService = inject(LoaderService);
 
   isLoading = this.loaderService.isLoading;
 
@@ -34,9 +33,9 @@ export class WishlistPage {
   wishlistCount = computed(() => this.wishlistItems().length);
 
   constructor() {
-    this.loaderService.show(); // ← show on init
+    this.loaderService.show();
     afterNextRender(() => {
-      this.loaderService.hide(); // ← hide after render
+      this.loaderService.hide();
     });
   }
 

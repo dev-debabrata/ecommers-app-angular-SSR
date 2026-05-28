@@ -1,4 +1,4 @@
-import { afterNextRender, Component, inject, signal } from '@angular/core';
+import { afterNextRender, Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { Hero } from '../../components/hero/hero';
@@ -17,7 +17,6 @@ import { HomeLiving } from '../../components/categories/home-living/home-living'
 import { Jewellery } from '../../components/categories/jewellery/jewellery';
 import { BabyKids } from '../../components/categories/baby-kids/baby-kids';
 import { Loader } from '../../components/loader/loader';
-import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'app-home-page',
@@ -45,14 +44,11 @@ import { LoaderService } from '../../services/loader.service';
   styleUrl: './home-page.css',
 })
 export class HomePage {
-  private loaderService = inject(LoaderService);
-
-  isLoading = this.loaderService.isLoading;
+  isLoading = signal(true);
 
   constructor() {
-    this.loaderService.show();
     afterNextRender(() => {
-      this.loaderService.hide();
+      this.isLoading.set(false);
     });
   }
 }
