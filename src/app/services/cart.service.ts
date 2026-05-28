@@ -116,7 +116,10 @@ export class CartService {
       };
 
       this.cart.update((items) => items.map((i) => (i.id === product.id ? updatedItem : i)));
-      from(setDoc(doc(this.firestore, `users/${uid}/cart/${product.id}`), updatedItem)).subscribe();
+      runInInjectionContext(this.injector, () => {
+        setDoc(doc(this.firestore, `users/${uid}/cart/${product.id}`), updatedItem);
+      });
+      // from(setDoc(doc(this.firestore, `users/${uid}/cart/${product.id}`), updatedItem)).subscribe();
       return;
     }
 
@@ -135,7 +138,10 @@ export class CartService {
     };
 
     this.cart.update((items) => [...items, cartItem]);
-    from(setDoc(doc(this.firestore, `users/${uid}/cart/${product.id}`), cartItem)).subscribe();
+    runInInjectionContext(this.injector, () => {
+      setDoc(doc(this.firestore, `users/${uid}/cart/${product.id}`), cartItem);
+    });
+    // from(setDoc(doc(this.firestore, `users/${uid}/cart/${product.id}`), cartItem)).subscribe();
   }
 
   removeItem(id: string) {
@@ -143,7 +149,10 @@ export class CartService {
     if (!uid) return;
 
     this.cart.update((items) => items.filter((i) => i.id !== id));
-    from(deleteDoc(doc(this.firestore, `users/${uid}/cart/${id}`))).subscribe();
+    runInInjectionContext(this.injector, () => {
+      deleteDoc(doc(this.firestore, `users/${uid}/cart/${id}`));
+    });
+    // from(deleteDoc(doc(this.firestore, `users/${uid}/cart/${id}`))).subscribe();
   }
 
   updateQuantity(id: string, qty: number) {
@@ -160,7 +169,10 @@ export class CartService {
 
     const updatedItem = { ...item, quantity: qty };
     this.cart.update((items) => items.map((i) => (i.id === id ? updatedItem : i)));
-    from(setDoc(doc(this.firestore, `users/${uid}/cart/${id}`), updatedItem)).subscribe();
+    runInInjectionContext(this.injector, () => {
+      setDoc(doc(this.firestore, `users/${uid}/cart/${id}`), updatedItem);
+    });
+    // from(setDoc(doc(this.firestore, `users/${uid}/cart/${id}`), updatedItem)).subscribe();
   }
 
   clearCart() {
@@ -168,7 +180,10 @@ export class CartService {
     if (!uid) return;
 
     this.cart().forEach((item) => {
-      from(deleteDoc(doc(this.firestore, `users/${uid}/cart/${item.id}`))).subscribe();
+      runInInjectionContext(this.injector, () => {
+        deleteDoc(doc(this.firestore, `users/${uid}/cart/${item.id}`));
+      });
+      // from(deleteDoc(doc(this.firestore, `users/${uid}/cart/${item.id}`))).subscribe();
     });
 
     this.cart.set([]);
@@ -186,7 +201,10 @@ export class CartService {
 
     const cartItem = { ...item, quantity: 1, createdAt: Date.now() };
     this.cart.update((items) => [...items, cartItem]);
-    from(setDoc(doc(this.firestore, `users/${uid}/cart/${item.id}`), cartItem)).subscribe();
+    runInInjectionContext(this.injector, () => {
+      setDoc(doc(this.firestore, `users/${uid}/cart/${item.id}`), cartItem);
+    });
+    // from(setDoc(doc(this.firestore, `users/${uid}/cart/${item.id}`), cartItem)).subscribe();
   }
 
   saveForLater(item: CartItem) {

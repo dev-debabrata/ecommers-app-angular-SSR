@@ -17,7 +17,7 @@ import { SaveLater } from '../../../components/save-later/save-later';
 export class CartPage {
   private router = inject(Router);
   private cartService = inject(CartService);
-  private saveLaterService = Inject(SaveLaterService);
+  private saveLaterService = inject(SaveLaterService);
 
   cart = this.cartService.cart;
   total = this.cartService.totalPrice;
@@ -48,7 +48,7 @@ export class CartPage {
     this.router.navigate(['/products', id]);
   }
 
-  saveForLater(item: CartItem) {
+  addSaveForLater(item: CartItem) {
     this.cartService.removeItem(item.id);
     this.saveLaterService.saveForLater(item);
   }

@@ -37,39 +37,35 @@ export class SaveLaterService {
       const ref = collection(this.firestore, `users/${uid}/savedLater`);
       return collectionData(ref);
     }).subscribe((items: any) => {
-      const updated = items.map((item: any) => ({
-        ...item,
-        quantity: item.quantity ?? 1,
-        discount: item.discount ?? 0,
-        subCategory: item.subCategory ?? '',
-      }));
+      const updated = items
+        .map((item: any) => ({
+          ...item,
+          quantity: item.quantity ?? 1,
+          discount: item.discount ?? 0,
+          subCategory: item.subCategory ?? '',
+        }))
+        .sort((a: CartItem, b: CartItem) => (b.createdAt ?? 0) - (a.createdAt ?? 0));
       this.savedLater.set(updated);
     });
   }
-
-  // loadSavedLater() {
-  //   const uid = this.auth.currentUser?.uid;
-  //   if (!uid) return;
-
-  //   const ref = collection(this.firestore, `users/${uid}/savedLater`);
-
-  //   runInInjectionContext(this.injector, () => collectionData(ref)).subscribe((items: any) => {
-  //     const updated = items.map((item: any) => ({
-  //       ...item,
-  //       quantity: item.quantity ?? 1,
-  //       discount: item.discount ?? 0,
-  //       subCategory: item.subCategory ?? '',
-  //     }));
-  //     this.savedLater.set(updated);
-  //   });
-  // }
 
   saveForLater(item: CartItem) {
     const uid = this.auth.currentUser?.uid;
     if (!uid) return;
 
-    this.savedLater.update((items) => [...items, item]);
-    from(setDoc(doc(this.firestore, `users/${uid}/savedLater/${item.id}`), item)).subscribe();
+    const savedItem = { ...item, createdAt: Date.now() };
+
+    this.savedLater.update((items) =>
+      [...items, savedItem].sort((a, b) => (b.createdAt ?? 0) - (a.createdAt ?? 0)),
+    );
+
+    runInInjectionContext(this.injector, () => {
+      setDoc(doc(this.firestore, `users/${uid}/savedLater/${item.id}`), savedItem);
+    });
+
+    // from(setDoc(doc(this.firestore, `users/${uid}/savedLater/${item.id}`), savedItem)).subscribe();
+    // this.savedLater.update((items) => [...items, savedItem]);
+    // from(setDoc(doc(this.firestore, `users/${uid}/savedLater/${item.id}`), item)).subscribe();
   }
 
   moveToCart(item: CartItem) {
@@ -77,7 +73,10 @@ export class SaveLaterService {
     if (!uid) return;
 
     this.savedLater.update((items) => items.filter((i) => i.id !== item.id));
-    from(deleteDoc(doc(this.firestore, `users/${uid}/savedLater/${item.id}`))).subscribe();
+    runInInjectionContext(this.injector, () => {
+      deleteDoc(doc(this.firestore, `users/${uid}/savedLater/${item.id}`));
+    });
+    // from(deleteDoc(doc(this.firestore, `users/${uid}/savedLater/${item.id}`))).subscribe();
   }
 
   removeFromSaved(id: string) {
@@ -85,6 +84,9 @@ export class SaveLaterService {
     if (!uid) return;
 
     this.savedLater.update((items) => items.filter((i) => i.id !== id));
-    from(deleteDoc(doc(this.firestore, `users/${uid}/savedLater/${id}`))).subscribe();
+    runInInjectionContext(this.injector, () => {
+      deleteDoc(doc(this.firestore, `users/${uid}/savedLater/${id}`));
+    });
+    // from(deleteDoc(doc(this.firestore, `users/${uid}/savedLater/${id}`))).subscribe();
   }
 }
