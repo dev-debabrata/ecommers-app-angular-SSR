@@ -1,5 +1,5 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { AdminAuthService } from '../../../services/auth-admin.service';
@@ -15,6 +15,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class AdminLoginPage implements OnInit {
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private adminAuthService = inject(AdminAuthService);
   private snackBar = inject(SnackbarService);
   private destroyRef = inject(DestroyRef);
@@ -35,11 +36,15 @@ export class AdminLoginPage implements OnInit {
   ngOnInit() {
     const sub = this.adminAuthService.isAdmin$.subscribe((isAdmin) => {
       if (isAdmin) {
-        this.router.navigate(['/admin']);
+        const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/admin/dashboard';
+        this.router.navigateByUrl(returnUrl);
+        // this.router.navigate(['/admin']);
       }
     });
 
-    this.destroyRef.onDestroy(() => sub.unsubscribe());
+    this.destroyRef.onDestroy(() => {
+      sub.unsubscribe();
+    });
   }
 
   onSubmit() {

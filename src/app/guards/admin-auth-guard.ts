@@ -1,53 +1,30 @@
-import { inject } from '@angular/core';
+import { inject, Injector, runInInjectionContext } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { Auth } from '@angular/fire/auth';
-import { map } from 'rxjs/operators';
-import { authState } from '@angular/fire/auth';
+import { Auth, authState } from '@angular/fire/auth';
+import { from, switchMap } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 export const adminAuthGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const auth = inject(Auth);
+  const injector = inject(Injector);
 
-  return authState(auth).pipe(
+  return from(auth.authStateReady()).pipe(
+    switchMap(() => runInInjectionContext(injector, () => authState(auth)).pipe(take(1))),
     map((user) => {
       const isLoginPage = state.url.startsWith('/admin/login');
 
       if (user && isLoginPage) {
-        return router.createUrlTree(['/admin']);
+        return router.createUrlTree(['/admin/dashboard']);
       }
 
       if (!user && !isLoginPage) {
-        return router.createUrlTree(['/admin/login']);
+        return router.createUrlTree(['/admin/login'], {
+          // queryParams: { returnUrl: state.url },
+        });
       }
 
       return true;
     }),
   );
 };
-
-// import { inject, PLATFORM_ID } from '@angular/core';
-// import { CanActivateFn, Router } from '@angular/router';
-// import { isPlatformBrowser } from '@angular/common';
-// import { map, of } from 'rxjs';
-// import { Auth } from '@angular/fire/auth';
-// import { authState } from '@angular/fire/auth';
-
-// export const adminAuthGuard: CanActivateFn = (route, state) => {
-//   const platformId = inject(PLATFORM_ID);
-//   const router = inject(Router);
-
-//   if (!isPlatformBrowser(platformId)) {
-//     return of(true);
-//   }
-
-//   const auth = inject(Auth);
-
-//   return authState(auth).pipe(
-//     map((user) => {
-//       const isLoginPage = state.url.startsWith('/admin/login');
-//       if (user && isLoginPage) return router.createUrlTree(['/admin']);
-//       if (!user && !isLoginPage) return router.createUrlTree(['/admin/login']);
-//       return true;
-//     }),
-//   );
-// };
