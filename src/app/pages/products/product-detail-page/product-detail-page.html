@@ -1,11 +1,11 @@
-@if (errorMsg) {
+@if (errorMsg()) {
   <app-error />
-} @else if (product) {
+} @else if (product(); as product) {
   <div class="product-details">
     <div class="product-details-card">
       <!-- Left -->
       <div class="img-section">
-        @if (showWishlistIcon) {
+        @if (showWishlistIcon()) {
           <div class="fav-icon">
             <button (click)="addToWishlist(product); $event.stopPropagation()">
               <mat-icon [ngClass]="{ 'active-wish': isWishlisted(product.id!) }">
@@ -33,7 +33,7 @@
         <h2>{{ product.title }}</h2>
 
         <div class="rating">
-          @for (star of stars; track $index) {
+          @for (star of stars(); track $index) {
             <span [ngClass]="star">&#9733;</span>
           }
           <span class="rating-number">({{ product.rating || 0 }})</span>
