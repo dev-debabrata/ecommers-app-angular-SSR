@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, Input, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, input, Input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatIcon } from '@angular/material/icon';
@@ -32,13 +32,12 @@ export class ProductDetailPage implements OnInit {
   private loaderService = inject(LoaderService);
   private snackBar = inject(SnackbarService);
 
-  @Input() showWishlistIcon = true;
+  showWishlistIcon = input(true);
+  // @Input() showWishlistIcon = true; // old version
 
-  product: Product | null = null;
-  stars: string[] = [];
-  errorMsg = false;
-  showAllReviews = false;
-  isPopupOpen = false;
+  product = signal<Product | null>(null);
+  stars = signal<string[]>([]);
+  errorMsg = signal(false);
 
   ngOnInit(): void {
     const routeSub = this.route.paramMap.subscribe((params) => {
@@ -48,20 +47,21 @@ export class ProductDetailPage implements OnInit {
 
       this.loaderService.show();
 
-      this.errorMsg = false;
-      this.product = null;
+      this.errorMsg.set(false);
+      this.product.set(null);
 
       const productSub = this.productService.getProductById(productId).subscribe({
         next: (res) => {
-          this.product = res as Product;
+          this.product.set(res as Product);
 
-          this.stars = Rating.getStars(this.product?.rating || 0);
+          this.stars.set(Rating.getStars(res?.rating || 0));
+          // this.stars.set(Rating.getStars(this.product()?.rating || 0));
           console.log(res);
           this.loaderService.hide();
         },
 
         error: (err) => {
-          this.errorMsg = true;
+          this.errorMsg.set(true);
           this.loaderService.hide();
           console.log(err);
         },
