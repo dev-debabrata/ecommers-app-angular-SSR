@@ -1,4 +1,4 @@
-import { Component, inject, PLATFORM_ID } from '@angular/core';
+import { Component, inject, PLATFORM_ID, signal } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Header } from '../../components/header/header';
 import { Footer } from '../../components/footer/footer';
@@ -16,8 +16,8 @@ export class CustomerLayout {
   route = inject(ActivatedRoute);
   // private platformId = inject(PLATFORM_ID);
 
-  hideLayout = false;
-  hideBreadcrumb = false;
+  hideLayout = signal(false);
+  hideBreadcrumb = signal(false);
 
   constructor() {
     // if (!isPlatformBrowser(this.platformId)) return;
@@ -32,8 +32,8 @@ export class CustomerLayout {
   private updateLayoutFlags(route: ActivatedRoute) {
     let current: ActivatedRoute | null = route;
 
-    this.hideLayout = false;
-    this.hideBreadcrumb = false;
+    this.hideLayout.set(false);
+    this.hideBreadcrumb.set(false);
 
     // const isAdminRoute = this.router.url.startsWith('/admin');
 
@@ -47,11 +47,11 @@ export class CustomerLayout {
       const data = current.snapshot.data;
 
       if (data?.['hideLayout']) {
-        this.hideLayout = true;
+        this.hideLayout.set(true);
       }
 
       if (data?.['hideBreadcrumb']) {
-        this.hideBreadcrumb = true;
+        this.hideBreadcrumb.set(true);
       }
 
       current = current.firstChild!;
